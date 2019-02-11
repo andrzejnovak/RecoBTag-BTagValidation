@@ -111,12 +111,12 @@ options.register('fatJetSoftDropMassMax', 1.E6,
     VarParsing.varType.float,
     "Maximum fat jet softdrop mass"
     )
-options.register('fatJetTau21Min', 0.0, 
+options.register('fatJetTau21Min', 0.0,
     VarParsing.multiplicity.singleton,
     VarParsing.varType.float,
     "tau2/tau1 jet substructure min cut for fat jets"
     )
-options.register('fatJetTau21Max', 0.6, 
+options.register('fatJetTau21Max', 0.6,
     VarParsing.multiplicity.singleton,
     VarParsing.varType.float,
     "tau2/tau1 jet substructure max cut for fat jets"
@@ -261,16 +261,16 @@ options.register('FileSubJetPtWt', "/afs/cern.ch/user/d/devdatta/afswork/CMSREL/
     VarParsing.varType.string,
     "File with data/MC weights for subjet pT reweighting"
     )
-options.register('newJECPayloadNames',  
-    "", 
+options.register('newJECPayloadNames',
+    "",
     VarParsing.multiplicity.list,
     VarParsing.varType.string,
     "New JEC payload names"
     ),
-options.register('jecUncPayloadName', 
+options.register('jecUncPayloadName',
     "/afs/cern.ch/user/d/devdatta/afswork/CMSREL/BTagging/CMSSW_8_0_23/src/RecoBTag/BTagValidation/test/Summer16_23Sep2016V3_MC/Summer16_23Sep2016V3_MC_Uncertainty_AK4PFchs.txt",
     VarParsing.multiplicity.singleton,
-    VarParsing.varType.string, 
+    VarParsing.varType.string,
     "JEC uncertainty payload name"
     ),
 options.register('doNewJEC', False,
@@ -320,7 +320,7 @@ options.register('runEventInfo', True,
 
 options.parseArguments()
 
-if options.doJECUncert and options.jecshift==0: 
+if options.doJECUncert and options.jecshift==0:
   sys.exit("!!!!ERROR: JEC uncertainty selected byt jecshift not set. Set jecshift either to -1 or 1\n")
 
 if options.usePrunedSubjets and options.useSoftDropSubjets:
@@ -399,8 +399,8 @@ process.btagval = cms.EDAnalyzer('BTagValidation',
     ApplySubJetBTagging    = cms.bool(options.applySubJetBTagging),
     DynamicMuonSubJetDR    = cms.bool(options.dynamicMuonSubJetDR),
     FatJetBDiscrCut        = cms.double(options.fatJetBDiscrCut),
-    FatJetDoubleSVBDiscrMin= cms.double(options.fatJetDoubleSVBDiscrMin), 
-    FatJetDoubleSVBDiscrMax= cms.double(options.fatJetDoubleSVBDiscrMax), 
+    FatJetDoubleSVBDiscrMin= cms.double(options.fatJetDoubleSVBDiscrMin),
+    FatJetDoubleSVBDiscrMax= cms.double(options.fatJetDoubleSVBDiscrMax),
     SubJetBDiscrMin        = cms.double(options.subJetBDiscrMin),
     SubJetBDiscrMax        = cms.double(options.subJetBDiscrMax),
     FatJetPtMin            = cms.double(options.fatJetPtMin),
@@ -414,7 +414,7 @@ process.btagval = cms.EDAnalyzer('BTagValidation',
     Hist_PUDistData        = cms.string('pileup'),
     File_FatJetPtWt        = cms.string(options.FileFatJetPtWt),
     Hist_FatJetPtWt        = cms.string('fatjetptweight_mc_data'),
-    File_SubJetPtWt        = cms.string(options.FileSubJetPtWt), 
+    File_SubJetPtWt        = cms.string(options.FileSubJetPtWt),
     Hist_SubJetPtWt        = cms.string('jetptweight_mc_data'),
     FatJetSoftDropMassMax  = cms.double(options.fatJetSoftDropMassMax),
     FatJetTau21Min         = cms.double(options.fatJetTau21Min), #added by rizki
@@ -430,10 +430,10 @@ process.btagval = cms.EDAnalyzer('BTagValidation',
     DoGSPDown              = cms.bool(options.doGSPDown),
     DoBFrag                = cms.bool(options.doBFrag),
     DoBFragUp              = cms.bool(options.doBFragUp),
-    DoBFragDown            = cms.bool(options.doBFragDown),                                 
+    DoBFragDown            = cms.bool(options.doBFragDown),
     DoCDFrag               = cms.bool(options.doCDFrag),
     DoCFrag                = cms.bool(options.doCFrag),
-    DoK0L                  = cms.bool(options.doK0L),                                 
+    DoK0L                  = cms.bool(options.doK0L),
     RemoveJP0              = cms.bool(options.removeJP0),
     DoSubJetPtReweighting  = cms.bool(options.doSubJetPtReweighting),
     TriggerSelection       = cms.vstring( # OR of all listed triggers applied, empty list --> no trigger selection applied
@@ -454,13 +454,13 @@ process.btagval = cms.EDAnalyzer('BTagValidation',
     btagCSVFile            = cms.string(options.btagCSVFile),
     btagOperatingPoint     = cms.int32(options.btagOperatingPoint),
     btagMeasurementType    = cms.string(options.btagMeasurementType),
-    btagSFType             = cms.string(options.btagSFType), 
-    newJECPayloadNames     = cms.vstring(options.newJECPayloadNames), 
-    jecUncPayloadName      = cms.string(options.jecUncPayloadName), 
+    btagSFType             = cms.string(options.btagSFType),
+    newJECPayloadNames     = cms.vstring(options.newJECPayloadNames),
+    jecUncPayloadName      = cms.string(options.jecUncPayloadName),
     doNewJEC               = cms.bool(options.doNewJEC),
-    doJECUncert            = cms.bool(options.doJECUncert),  
-    jecshift               = cms.int32(options.jecshift),  
-    useRunRange            = cms.bool(options.useRunRange),  
+    doJECUncert            = cms.bool(options.doJECUncert),
+    jecshift               = cms.int32(options.jecshift),
+    useRunRange            = cms.bool(options.useRunRange),
     runRangeMin            = cms.int32(options.runRangeMin),
     runRangeMax            = cms.int32(options.runRangeMax),
     variables              = variableToRead,

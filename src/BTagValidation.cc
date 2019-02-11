@@ -337,7 +337,7 @@ BTagValidation::BTagValidation(const edm::ParameterSet& iConfig) :
   variableParser(false)
 {
   //now do what ever initialization is needed
-  isData = false;
+  isData = true;
   nEventsAll = 0;
   nEventsStored = 0;
 
@@ -458,6 +458,24 @@ void BTagValidation::createJetHistos(const TString& histoTag) {
   AddHisto(histoTag+"_DeepCSV" ,";DeepCSV;;",50,0.,1.);
   AddHisto(histoTag+"_cMVAv2"  ,";cMVAv2;;",50,0.,1.);
   AddHisto(histoTag+"_DoubleB" ,";DoubleB;;",100,-1,1.);
+  AddHisto(histoTag+"_deepDoubleBvLQCD", "Jet_deepDoubleBvLQCD", 100, -1, 1 );
+  AddHisto(histoTag+"_deepDoubleBvLHbb", "Jet_deepDoubleBvLHbb", 100, -1, 1 );
+  AddHisto(histoTag+"_deepDoubleCvLQCD", "Jet_deepDoubleCvLQCD", 100, -1, 1 );
+  AddHisto(histoTag+"_deepDoubleCvLHcc", "Jet_deepDoubleCvLHcc", 100, -1, 1 );
+  AddHisto(histoTag+"_deepDoubleCvBHcc", "Jet_deepDoubleCvBHcc", 100, -1, 1 );
+  AddHisto(histoTag+"_deepDoubleCvBHbb", "Jet_deepDoubleCvBHbb", 100, -1, 1 );
+  AddHisto(histoTag+"_massIndDeepDoubleBvLQCD", "Jet_massIndDeepDoubleBvLQCD", 100, -1, 1 );
+  AddHisto(histoTag+"_massIndDeepDoubleBvLHbb", "Jet_massIndDeepDoubleBvLHbb", 100, -1, 1 );
+  AddHisto(histoTag+"_massIndDeepDoubleCvLQCD", "Jet_massIndDeepDoubleCvLQCD", 100, -1, 1 );
+  AddHisto(histoTag+"_massIndDeepDoubleCvLHcc", "Jet_massIndDeepDoubleCvLHcc", 100, -1, 1 );
+  AddHisto(histoTag+"_massIndDeepDoubleCvBHcc", "Jet_massIndDeepDoubleCvBHcc", 100, -1, 1 );
+  AddHisto(histoTag+"_massIndDeepDoubleCvBHbb", "Jet_massIndDeepDoubleCvBHbb", 100, -1, 1 );
+  AddHisto(histoTag+"_deepBoostedJetbbvsLight", "Jet_deepBoostedJetbbvsLight", 100, -1, 1 );
+  AddHisto(histoTag+"_deepBoostedJetccvsLight", "Jet_deepBoostedJetccvsLight", 100, -1, 1 );
+  AddHisto(histoTag+"_deepBoostedJetTvsQCD", "Jet_deepBoostedJetTvsQCD", 100, -1, 1 );
+  AddHisto(histoTag+"_deepBoostedJetZHccvsQCD", "Jet_deepBoostedJetZHccvsQCD", 100, -1, 1 );
+  AddHisto(histoTag+"_deepBoostedJetWvsQCD", "Jet_deepBoostedJetWvsQCD", 100, -1, 1 );
+  AddHisto(histoTag+"_deepBoostedJetZHbbvsQCD", "Jet_deepBoostedJetZHbbvsQCD", 100, -1, 1 );
 
   if ( histoTag.Contains("SubJet") ) { 
 
@@ -600,7 +618,7 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     //---------------------------- Start fat jet loop ---------------------------------------//
     for (int iJet = 0; iJet < FatJetInfo.nJet; ++iJet) {
 
-      double jetptuncorr(FatJetInfo.Jet_uncorrpt [iJet]) ;
+      //double jetptuncorr(FatJetInfo.Jet_uncorrpt [iJet]) ;
       double jetpt(FatJetInfo.Jet_pt [iJet]) ;
       double jetabseta(fabs(FatJetInfo.Jet_eta[iJet])) ;
       double jetmass(FatJetInfo.Jet_massSoftDrop[iJet]);
@@ -613,7 +631,7 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       if ( jetpt < fatJetPtMin_ ||
           jetpt >= fatJetPtMax_ )            continue; //// apply jet pT cut
       if ( jetabseta > fatJetAbsEtaMax_ )     continue; //// apply jet eta cut
-      if ( FatJetInfo.Jet_tightID[iJet]==0 )  continue; //// apply tight jet ID
+      /////////////////////if ( FatJetInfo.Jet_tightID[iJet]==0 )  continue; //// apply tight jet ID
       if ( jetmass < fatJetSoftDropMassMin_ ||
           jetmass > fatJetSoftDropMassMax_ )   continue; //// apply soft drop jet mass cut
 
@@ -626,14 +644,14 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       TLorentzVector jet_p4;
       jet_p4.SetPtEtaPhiM(FatJetInfo.Jet_pt[iJet], FatJetInfo.Jet_eta[iJet], FatJetInfo.Jet_phi[iJet], FatJetInfo.Jet_mass[iJet]);
 
-      if ( SubJetInfo.Jet_nSubJets[iJet] != 2 ) continue ;
+      /////////////////////if ( SubJetInfo.Jet_nSubJets[iJet] != 2 ) continue ;
 
       int iSubJet1(SubJetInfo.SubJetIdx[SubJetInfo.Jet_nFirstSJ[iJet]]) ; ////added by rizki
       int iSubJet2(SubJetInfo.SubJetIdx[SubJetInfo.Jet_nFirstSJ[iJet]+1]) ; ////added by rizki
 
       //// If  processing subjets, discard fat jet with any one subjet having pt = 0
-      if( (usePrunedSubjets_ || useSoftDropSubjets_)
-          && (SubJets.Jet_pt[iSubJet1]==0. || SubJets.Jet_pt[iSubJet2]==0.) ) continue;
+      //////////////////////if( (usePrunedSubjets_ || useSoftDropSubjets_)
+      //////////////////////    && (SubJets.Jet_pt[iSubJet1]==0. || SubJets.Jet_pt[iSubJet2]==0.) ) continue;
 
       TLorentzVector subjet1_p4, subjet2_p4;
       subjet1_p4.SetPtEtaPhiM(SubJets.Jet_pt[iSubJet1], SubJets.Jet_eta[iSubJet1], SubJets.Jet_phi[iSubJet1], SubJets.Jet_mass[iSubJet1]);
@@ -642,8 +660,8 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       double subjet_dR(subjet1_p4.DeltaR(subjet2_p4));
 
       //// If processing subjets, skip infrared unsafe configurations
-      if( (usePrunedSubjets_ || useSoftDropSubjets_)
-          && subjet_dR < (FatJetInfo.Jet_mass[iJet]/FatJetInfo.Jet_pt[iJet]) ) continue;
+      //////////////////////if( (usePrunedSubjets_ || useSoftDropSubjets_)
+      //////////////////////    && subjet_dR < (FatJetInfo.Jet_mass[iJet]/FatJetInfo.Jet_pt[iJet]) ) continue;
 
       int idxFirstMuon(-1);
       int nselmuon(0);
@@ -1183,9 +1201,27 @@ void BTagValidation::fillJetHistos(const JetInfoBranches& JetInfo, const int iJe
   double jetbproba(JetInfo.Jet_Bprob[iJet]);
   double csvivfv2 (JetInfo.Jet_CombIVF[iJet]);
   double deepcsv  (JetInfo.Jet_DeepCSVBDisc[iJet]);
+  double mass_TagVarCSV_sv (JetInfo.TagVarCSV_vertexMass[iJet]);
   double cmvav2   (JetInfo.Jet_cMVAv2[iJet]);
   double doubleb  (JetInfo.Jet_DoubleSV[iJet]);
-  double mass_TagVarCSV_sv (JetInfo.TagVarCSV_vertexMass[iJet]);
+  double deepDoubleBvLQCD  (JetInfo.Jet_DeepDoubleBvLQCD[iJet]);
+  double deepDoubleBvLHbb  (JetInfo.Jet_DeepDoubleBvLHbb[iJet]);
+  double deepDoubleCvLQCD  (JetInfo.Jet_DeepDoubleCvLQCD[iJet]);
+  double deepDoubleCvLHcc  (JetInfo.Jet_DeepDoubleCvLHcc[iJet]);
+  double deepDoubleCvBHcc  (JetInfo.Jet_DeepDoubleCvBHcc[iJet]);
+  double deepDoubleCvBHbb  (JetInfo.Jet_DeepDoubleCvBHbb[iJet]);
+  double massIndDeepDoubleBvLQCD  (JetInfo.Jet_MassIndDeepDoubleBvLQCD[iJet]);
+  double massIndDeepDoubleBvLHbb  (JetInfo.Jet_MassIndDeepDoubleBvLHbb[iJet]);
+  double massIndDeepDoubleCvLQCD  (JetInfo.Jet_MassIndDeepDoubleCvLQCD[iJet]);
+  double massIndDeepDoubleCvLHcc  (JetInfo.Jet_MassIndDeepDoubleCvLHcc[iJet]);
+  double massIndDeepDoubleCvBHcc  (JetInfo.Jet_MassIndDeepDoubleCvBHcc[iJet]);
+  double massIndDeepDoubleCvBHbb  (JetInfo.Jet_MassIndDeepDoubleCvBHbb[iJet]);
+  double deepBoostedJetbbvsLight (JetInfo.Jet_DeepBoostedJetbbvsLight[iJet]);
+  double deepBoostedJetccvsLight (JetInfo.Jet_DeepBoostedJetccvsLight[iJet]);
+  double deepBoostedJetTvsQCD (JetInfo.Jet_DeepBoostedJetTvsQCD[iJet]);
+  double deepBoostedJetZHccvsQCD (JetInfo.Jet_DeepBoostedJetZHccvsQCD[iJet]);
+  double deepBoostedJetWvsQCD (JetInfo.Jet_DeepBoostedJetWvsQCD[iJet]);
+  double deepBoostedJetZHbbvsQCD (JetInfo.Jet_DeepBoostedJetZHbbvsQCD[iJet]);
 
   FillHisto(histoTag+"_JP",       flav, isGSPbb, isGSPcc ,jetproba  ,wt);
   FillHisto(histoTag+"_JBP",      flav, isGSPbb, isGSPcc ,jetbproba ,wt);
@@ -1194,6 +1230,24 @@ void BTagValidation::fillJetHistos(const JetInfoBranches& JetInfo, const int iJe
   FillHisto(histoTag+"_TagVarCSV_sv_mass", flav, isGSPbb ,isGSPcc ,mass_TagVarCSV_sv,   wt);
   FillHisto(histoTag+"_cMVAv2",   flav, isGSPbb, isGSPcc ,cmvav2    ,wt);
   FillHisto(histoTag+"_DoubleB",  flav, isGSPbb, isGSPcc ,doubleb   ,wt);
+  FillHisto(histoTag+"_deepDoubleBvLQCD",  flav, isGSPbb, isGSPcc ,deepDoubleBvLQCD   ,wt);
+  FillHisto(histoTag+"_deepDoubleBvLHbb",  flav, isGSPbb, isGSPcc ,deepDoubleBvLHbb   ,wt);
+  FillHisto(histoTag+"_deepDoubleCvLQCD",  flav, isGSPbb, isGSPcc ,deepDoubleCvLQCD   ,wt);
+  FillHisto(histoTag+"_deepDoubleCvLHcc",  flav, isGSPbb, isGSPcc ,deepDoubleCvLHcc   ,wt);
+  FillHisto(histoTag+"_deepDoubleCvBHcc",  flav, isGSPbb, isGSPcc ,deepDoubleCvBHcc   ,wt);
+  FillHisto(histoTag+"_deepDoubleCvBHbb",  flav, isGSPbb, isGSPcc ,deepDoubleCvBHbb   ,wt);
+  FillHisto(histoTag+"_massIndDeepDoubleBvLQCD",  flav, isGSPbb, isGSPcc ,massIndDeepDoubleBvLQCD   ,wt);
+  FillHisto(histoTag+"_massIndDeepDoubleBvLHbb",  flav, isGSPbb, isGSPcc ,massIndDeepDoubleBvLHbb   ,wt);
+  FillHisto(histoTag+"_massIndDeepDoubleCvLQCD",  flav, isGSPbb, isGSPcc ,massIndDeepDoubleCvLQCD   ,wt);
+  FillHisto(histoTag+"_massIndDeepDoubleCvLHcc",  flav, isGSPbb, isGSPcc ,massIndDeepDoubleCvLHcc   ,wt);
+  FillHisto(histoTag+"_massIndDeepDoubleCvBHcc",  flav, isGSPbb, isGSPcc ,massIndDeepDoubleCvBHcc   ,wt);
+  FillHisto(histoTag+"_massIndDeepDoubleCvBHbb",  flav, isGSPbb, isGSPcc ,massIndDeepDoubleCvBHbb   ,wt);
+  FillHisto(histoTag+"_deepBoostedJetbbvsLight",  flav, isGSPbb, isGSPcc ,deepBoostedJetbbvsLight ,wt);
+  FillHisto(histoTag+"_deepBoostedJetccvsLight",  flav, isGSPcc, isGSPcc ,deepBoostedJetccvsLight ,wt);
+  FillHisto(histoTag+"_deepBoostedJetTvsQCD",  flav, isGSPbb, isGSPcc ,deepBoostedJetTvsQCD ,wt);
+  FillHisto(histoTag+"_deepBoostedJetZHccvsQCD",  flav, isGSPbb, isGSPcc ,deepBoostedJetZHccvsQCD ,wt);
+  FillHisto(histoTag+"_deepBoostedJetWvsQCD",  flav, isGSPbb, isGSPcc ,deepBoostedJetWvsQCD ,wt);
+  FillHisto(histoTag+"_deepBoostedJetZHbbvsQCD",  flav, isGSPbb, isGSPcc ,deepBoostedJetZHbbvsQCD ,wt);
 
 }
 
