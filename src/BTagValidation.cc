@@ -1546,7 +1546,7 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       if (removeProblemJet_ && !isData && EvtInfo.pthat < 300. && FatJetInfo.Jet_pt[iJet] > EvtInfo.pthat * 7.) problemJet = true;
       if (removeProblemJet_ && !isData && FatJetInfo.nJet > 15) problemJet = true;
       if (removeProblemJet_ && !isData && FatJetInfo.Jet_pt[iJet] > 5000. ) problemJet = true;
-      if(problemJet) total_removedProblemJet++;
+      //if(problemJet) total_removedProblemJet++;  // error 'bool' in 'operator++' is forbidden in C++1z
       if(DEBUG_ && problemJet && removeProblemJet_ && !isData)std::cout << "Fatjet selection: ---------------------------------> removed (problematic) Jet! "<< std::endl;
       if(DEBUG_ && removeProblemJet_ && !isData)std::cout << "Fatjet selection: done with problemJet "<< std::endl;
 
