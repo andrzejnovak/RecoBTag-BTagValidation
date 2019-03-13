@@ -1,7 +1,18 @@
 # ------- General options ----------
 # campaign name, needed for list of samples definition, etc...
 
-campaigns       = [ 'Run2017SF',
+campaigns       = [ 'Run2017DoubleB',
+                    'Run2017DoubleB_BFRAGUP',
+                    'Run2017DoubleB_BFRAGDOWN',
+                    'Run2017DoubleB_CFRAG',
+                    #'Run2017DoubleB_K0L',
+                    #'Run2017DoubleB_CD',
+                    #'Run2017DDBvL',
+                    #'Run2017DDBvL_BFRAGUP',
+                    #'Run2017DDBvL_BFRAGDOWN',
+                    #'Run2017DDBvL_CFRAG',
+                    #'Run2017DDBvL_K0L',
+                    #'Run2017DDBvL_CD',
                     #'Run2017Comm'
 					         ]
 
@@ -19,17 +30,16 @@ luminosity      = 1
 # Name of the analyzer
 analyzer_module = 'btagval'
 # Groups for histogram merging
-# groups          = ['DATA', 'QCDincl']
 groups          = ['DATA', 'QCDMu+']
-# groups          = ['DATA']
+
 
 # -------- Batch options -----------
 # Choose if you want to use batch: False, condor, lxbatch
 batch_type      = 'condor'
 # Number of jobs per sample: -1 = all, x = some arbitrary number
-number_of_jobs  = 1
+number_of_jobs  = -1
 # Number of files per job
-number_of_files = 2#20
+number_of_files = 20
 # Send jobs switch
 send_jobs       = True
 # lxbatch options
@@ -49,13 +59,13 @@ remote_locations = {
     # 'eos' : '/srm-eoscms.cern.ch:8443/srm/v2/server?SFN=', # Used for lcg
   },
   'path'   : {
-    'eos' : '/eos/cms/store/group/phys_btag/BoostedBTag/BTagNTuples/2017/9_4_X_v03/'
+    'eos' : '/eos/cms/store/group/phys_btag/BoostedBTag/BTagNTuples/2017/9_4_X_v04/'
     #'eos' : '/eos/cms/store/group/phys_btag/BoostedBTag/BTagNTuples/2017/9_4_X',   # added by rizki Jan10-2018
     #'eos' : 'store/group/phys_btag/BoostedBTag/BTagNTuples/2017/9_4_X',   # Used for gfal
     # 'eos' : 'eos/cms/store/group/phys_btag/BoostedBTag/BTagNTuples/2017/9_4_X', # Used for lcg
   },
   'path_ex': {
-    'eos' : '/eos/cms/store/group/phys_btag/BoostedBTag/BTagNTuples/2017/9_4_X_v03/',
+    'eos' : '/eos/cms/store/group/phys_btag/BoostedBTag/BTagNTuples/2017/9_4_X_v04/',
   },
   'protocol': {
     'eos'  : '', # added by rizki Jan10-2018

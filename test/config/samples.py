@@ -2,111 +2,55 @@
 
 ### DoubleX commissioing 2017
 
+datasuff ="-17Nov2017-v1_v04_20190228"
+qcdsuff ="_MuEnrichedPt5_TuneCP5_13TeV_pythia8_v04_20190228"
+samples_data = [  'BTagMu_Run2017B'+datasuff,
+                  'BTagMu_Run2017C'+datasuff,
+                  'BTagMu_Run2017D'+datasuff,
+                  'BTagMu_Run2017E'+datasuff,
+                  'BTagMu_Run2017F'+datasuff,
+                  ]
+samples_qcd = [   'QCD_Pt-170to300'+qcdsuff,
+                  'QCD_Pt-300to470'+qcdsuff,
+                  'QCD_Pt-470to600'+qcdsuff,
+                  'QCD_Pt-600to800'+qcdsuff,
+                  'QCD_Pt-800to1000'+qcdsuff,
+                  'QCD_Pt-1000toInf'+qcdsuff,
+                  ]
+
+xs_qcd = [  8292.98,
+            797.35,
+            56.59,
+            25.10,
+            4.71,
+            1.62
+            ]
+# Create Info Dictionary
 info = {
-  # ------------------------------------ Data ------------------------------------------
-  'BTagMu_Run2017B-17Nov2017-v1_v03_20190222':{
-      'type'    : 'Data',
-      'group'   : 'DATA',
-      'subsample' : {
-          '0' : 'BTagMu_Run2017B-17Nov2017-v1_v03_20190222',
-          }
-      },
-  'BTagMu_Run2017C-17Nov2017-v1_v03_20190222':{
-      'type'    : 'Data',
-      'group'   : 'DATA',
-      'subsample' : {
-          '0' : 'BTagMu_Run2017C-17Nov2017-v1_v03_20190222',
-          }
-      },
-  'BTagMu_Run2017D-17Nov2017-v1_v03_20190222':{
-      'type'    : 'Data',
-      'group'   : 'DATA',
-      'subsample' : {
-          '0' : 'BTagMu_Run2017D-17Nov2017-v1_v03_20190222',
-          }
-      },
-  'BTagMu_Run2017E-17Nov2017-v1_v03_20190222':{
-      'type'    : 'Data',
-      'group'   : 'DATA',
-      'subsample' : {
-          '0' : 'BTagMu_Run2017E-17Nov2017-v1_v03_20190222',
-          }
-      },
-  'BTagMu_Run2017F-17Nov2017-v1_v03_20190222':{
-      'type'    : 'Data',
-      'group'   : 'DATA',
-      'subsample' : {
-          '0' : 'BTagMu_Run2017F-17Nov2017-v1_v03_20190222',
-          }
-      },
-
-  'QCD_Pt-170to300_MuEnrichedPt5_TuneCP5_13TeV_pythia8_v03_20190222':{
-      'type'    : 'MC',
-      'group'   : 'QCDMu+',
-      'subsample' : {
-          '0' : 'QCD_Pt-170to300_MuEnrichedPt5_TuneCP5_13TeV_pythia8_v03_20190222',
-          },
-      'xs':{
-          '0' : 8292.982,
-          }
-      },
-
-  'QCD_Pt-300to470_MuEnrichedPt5_TuneCP5_13TeV_pythia8_v03_20190222':{
-      'type'    : 'MC',
-      'group'   : 'QCDMu+',
-      'subsample' : {
-          '0' : 'QCD_Pt-300to470_MuEnrichedPt5_TuneCP5_13TeV_pythia8_v03_20190222',
-          },
-      'xs':{
-          '0' : 797.35,
-          }
-      },
-
-  'QCD_Pt-470to600_MuEnrichedPt5_TuneCP5_13TeV_pythia8_v03_20190222':{
-      'type'    : 'MC',
-      'group'   : 'QCDMu+',
-      'subsample' : {
-          '0' : 'QCD_Pt-470to600_MuEnrichedPt5_TuneCP5_13TeV_pythia8_v03_20190222',
-          },
-      'xs':{
-          '0' : 56.59,
-          }
-      },
-
-  'QCD_Pt-600to800_MuEnrichedPt5_TuneCP5_13TeV_pythia8_v03_20190222':{
-      'type'    : 'MC',
-      'group'   : 'QCDMu+',
-      'subsample' : {
-          '0' : 'QCD_Pt-600to800_MuEnrichedPt5_TuneCP5_13TeV_pythia8_v03_20190222',
-          },
-      'xs':{
-          '0' : 25.10,
-          }
-      },
-
-  'QCD_Pt-800to1000_MuEnrichedPt5_TuneCP5_13TeV_pythia8_v03_20190222':{
-      'type'    : 'MC',
-      'group'   : 'QCDMu+',
-      'subsample' : {
-          '0' : 'QCD_Pt-800to1000_MuEnrichedPt5_TuneCP5_13TeV_pythia8_v03_20190222',
-          },
-      'xs':{
-          '0' : 4.71,
-          }
-      },
-
-  'QCD_Pt-1000toInf_MuEnrichedPt5_TuneCP5_13TeV_pythia8_v03_20190222':{
-      'type'    : 'MC',
-      'group'   : 'QCDMu+',
-      'subsample' : {
-          '0' : 'QCD_Pt-1000toInf_MuEnrichedPt5_TuneCP5_13TeV_pythia8_v03_20190222',
-          },
-      'xs':{
-          '0' : 1.62,
-          }
-      },
-
 }
+
+# Fill infos for each sample
+for sample in samples_data:
+  info[sample] = {
+                'type'    : 'Data',
+                'group'   : 'DATA',
+                'subsample' : {
+                    '0' : sample,
+                    }
+                }
+for sample, xs in zip(samples_qcd, xs_qcd):
+  print sample, xs
+  info[sample] = {
+                'type'    : 'MC',
+                'group'   : 'QCDMu+',
+                'subsample' : {
+                    '0' : sample,
+                    },
+                'xs':{
+                    '0' : xs,
+                    }
+      }
+
 
 #### First attempt at producing comm plots - Jan10-2018
 #

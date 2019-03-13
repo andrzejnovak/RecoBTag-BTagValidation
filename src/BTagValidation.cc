@@ -695,7 +695,8 @@ void BTagValidation::beginJob() {
   }
   else {
     SubJetInfo.ReadBranches(JetTree,variableParser,"FatJetInfo","SoftDropPuppi");
-    edm::LogInfo("Error") << ">>>> No subjet type specified\n" ;
+    SubJets.ReadBranches(JetTree,variableParser,"SoftDropPuppiSubJetInfo") ;
+    edm::LogInfo("Error") << ">>>> No subjet type specified. Reading SoftDropSubject for DDX SFs\n" ;
   }
   
   double PtMax = 5000.;
@@ -1935,14 +1936,11 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         if(produceDDXSFtemplates_) {
             TString taggerTString = chooseDDXtagger_; // should implement this typefix properly
             if (DEBUG_) std::cout << "nSV : " << FatJetInfo.Jet_nSV_fat[iJet] << std::endl;            
+            std::cout << "nSV : " << FatJetInfo.Jet_nSV_fat[iJet] << " , " << FatJetInfo.Jet_nSV_fat[iJet] << std::endl;
             fillJetHistos_SF(FatJetInfo, iJet, isGSPbb, isGSPcc ,"FatJet", "JP", false, taggerTString , WPmap, ptbinmap, wtPU*wtFatJet);
-            // if (FatJetInfo.Jet_nSV_fat[iJet]>0)  fillJetHistos_SF(FatJetInfo, iJet, isGSPbb, isGSPcc ,"FatJet", "tau1VertexMassCorr",   true,  taggerTString,  WPmap, ptbinmap, wtPU*wtFatJet);
-            // if (FatJetInfo.Jet_nSV_fat[iJet]>0)  fillJetHistos_SF(FatJetInfo, iJet, isGSPbb, isGSPcc ,"FatJet", "JPhasSV",              false,  taggerTString, WPmap, ptbinmap, wtPU*wtFatJet);
-            // if (FatJetInfo.Jet_nSV_fat[iJet]==0) fillJetHistos_SF(FatJetInfo, iJet, isGSPbb, isGSPcc ,"FatJet", "JPnoSV",               false,  taggerTString, WPmap, ptbinmap, wtPU*wtFatJet);
-            // // TEMPORARY FIX TODO
-            if (FatJetInfo.Jet_SV_multi[iJet]>0)  fillJetHistos_SF(FatJetInfo, iJet, isGSPbb, isGSPcc ,"FatJet", "tau1VertexMassCorr",   true,  taggerTString,  WPmap, ptbinmap, wtPU*wtFatJet);
-            if (FatJetInfo.Jet_SV_multi[iJet]>0)  fillJetHistos_SF(FatJetInfo, iJet, isGSPbb, isGSPcc ,"FatJet", "JPhasSV",              false,  taggerTString, WPmap, ptbinmap, wtPU*wtFatJet);
-            if (FatJetInfo.Jet_SV_multi[iJet]==0) fillJetHistos_SF(FatJetInfo, iJet, isGSPbb, isGSPcc ,"FatJet", "JPnoSV",               false,  taggerTString, WPmap, ptbinmap, wtPU*wtFatJet);
+            if (FatJetInfo.Jet_nSV_fat[iJet]>0)  fillJetHistos_SF(FatJetInfo, iJet, isGSPbb, isGSPcc ,"FatJet", "tau1VertexMassCorr",   true,  taggerTString,  WPmap, ptbinmap, wtPU*wtFatJet);
+            if (FatJetInfo.Jet_nSV_fat[iJet]>0)  fillJetHistos_SF(FatJetInfo, iJet, isGSPbb, isGSPcc ,"FatJet", "JPhasSV",              false,  taggerTString, WPmap, ptbinmap, wtPU*wtFatJet);
+            if (FatJetInfo.Jet_nSV_fat[iJet]==0) fillJetHistos_SF(FatJetInfo, iJet, isGSPbb, isGSPcc ,"FatJet", "JPnoSV",               false,  taggerTString, WPmap, ptbinmap, wtPU*wtFatJet);
         }     
 
         /* Uncomment below as needed.
@@ -2672,9 +2670,7 @@ void BTagValidation::fillJetHistos_DeepDoubleX(const JetInfoBranches& JetInfo, c
 
     float LTSV_value  = JetInfo.Jet_Proba[iJet];
     if (useSVmass) {
-        //LTSV_value  = JetInfo.Jet_tau1_vertexMass_corrected[iJet];
-        // TEMPORARY FIX TODO
-        LTSV_value = JetInfo.TagVarCSV_vertexMass[iJet];
+        LTSV_value  = JetInfo.Jet_tau1_vertexMass_corrected[iJet];
     }
     float tagger_value = 0.;
     if (tagger == TString("DoubleB")) tagger_value  = JetInfo.Jet_DoubleSV[iJet];

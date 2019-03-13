@@ -11,72 +11,114 @@ def string(txt):
 
 ##############################
 ##############################
-SF_run = 'Run2017SF'
-Comm_run = 'Run2017Comm'
+taggers = ["DoubleB", "DDBvL"]
+run_name = 'Run2017'
 
-samples_data = [  'BTagMu_Run2017B-17Nov2017-v1_v03_20190222',
-                  'BTagMu_Run2017C-17Nov2017-v1_v03_20190222',
-                  'BTagMu_Run2017D-17Nov2017-v1_v03_20190222',
-                  'BTagMu_Run2017E-17Nov2017-v1_v03_20190222',
-                  'BTagMu_Run2017F-17Nov2017-v1_v03_20190222'
+datasuff ="-17Nov2017-v1_v04_20190228"
+qcdsuff ="_MuEnrichedPt5_TuneCP5_13TeV_pythia8_v04_20190228"
+samples_data = [  'BTagMu_Run2017B'+datasuff,
+                  'BTagMu_Run2017C'+datasuff,
+                  'BTagMu_Run2017D'+datasuff,
+                  'BTagMu_Run2017E'+datasuff,
+                  'BTagMu_Run2017F'+datasuff,
                   ]
-samples_qcd = [   'QCD_Pt-170to300_MuEnrichedPt5_TuneCP5_13TeV_pythia8_v03_20190222',
-                  'QCD_Pt-300to470_MuEnrichedPt5_TuneCP5_13TeV_pythia8_v03_20190222',
-                  'QCD_Pt-470to600_MuEnrichedPt5_TuneCP5_13TeV_pythia8_v03_20190222',
-                  'QCD_Pt-600to800_MuEnrichedPt5_TuneCP5_13TeV_pythia8_v03_20190222',
-                  'QCD_Pt-800to1000_MuEnrichedPt5_TuneCP5_13TeV_pythia8_v03_20190222',
-                  'QCD_Pt-1000toInf_MuEnrichedPt5_TuneCP5_13TeV_pythia8_v03_20190222'
+samples_qcd = [   'QCD_Pt-170to300'+qcdsuff,
+                  'QCD_Pt-300to470'+qcdsuff,
+                  'QCD_Pt-470to600'+qcdsuff,
+                  'QCD_Pt-600to800'+qcdsuff,
+                  'QCD_Pt-800to1000'+qcdsuff,
+                  'QCD_Pt-1000toInf'+qcdsuff,
                   ]
 
 # Source for config/general.py
 info = {
-  SF_run: {
-    # Dictionary of all samples with their list of subsamples. They are defined in samples.py
-    'samples' :{},
-    # Name of the root final with final histograms
-    'final_output' : 'Run2017_QCDMuEnriched_DoubleMuonTaggedFatJets_histograms_btagval.root',
-    # Dictionary of all variables that need to be changed for each campaign
-    'btagvalidation_cfg'  : { },
-  },
-  Comm_run: {
-    # Dictionary of all samples with their list of subsamples. They are defined in samples.py
-    'samples' :{},
-    # Name of the root final with final histograms
-    'final_output' : 'Run2017_QCDMuEnriched_DoubleMuonTaggedFatJets_histograms_btagval.root',
-    # Dictionary of all variables that need to be changed for each campaign
-    'btagvalidation_cfg'  : { },
-  },
 }
 
-# FIll SF Run
-for name in samples_data + samples_qcd:
-      info[SF_run]['samples'][name] = ['0']
-      if name in samples_data: _runOnData = True
-      else: _runOnData = False
-      info[SF_run]['btagvalidation_cfg'][name] = {
-            'DEBUG'                      : False
-            ,'runOnData'                 : _runOnData
-            ,'fatJetPtMin'               : 350.
-            ,'triggerSelection'          : string( ','.join(['HLT_BTagMu_AK8Jet300_Mu5' + "'", "'" + 'HLT_BTagMu_Jet300_Mu5']))
-            ,'FilePUDistData'            : string( os.path.join( paths.main, 'aux', 'RunII2017Rereco_RunBCDEF_v1v2topUp_25ns_PUXsec69200nb_Feb8-2018.root'))
-            ,'produceDDXSFtemplates'     : True
-            ,'chooseDDXtagger'           : string('DDBvL')
-            }
+# For each tagger in campaign
+for tagger in taggers:
+  # Fill basic dict
+  run_name_tagger = run_name + tagger
+  SF_output = run_name+'_'+tagger+'{}.root' # Keep {} for automatic sys name formatin
+  info[run_name_tagger] = {
+    # Dictionary of all samples with their list of subsamples. They are defined in samples.py
+    'samples' :{},
+    # Name of the root final with final histograms
+    'final_output' : SF_output.format(""),
+    # Dictionary of all variables that need to be changed for each campaign
+    'btagvalidation_cfg'  : { },
+  }
+
+  # Fill samples and configs
+  for name in samples_data + samples_qcd:
+        info[run_name_tagger]['samples'][name] = ['0']
+        if name in samples_data: _runOnData = True
+        else: _runOnData = False
+        info[run_name_tagger]['btagvalidation_cfg'][name] = {
+              'DEBUG'                      : False
+              ,'runOnData'                 : _runOnData
+              ,'fatJetPtMin'               : 350.
+              ,'triggerSelection'          : string( ','.join(['HLT_BTagMu_AK8Jet300_Mu5' + "'", "'" + 'HLT_BTagMu_Jet300_Mu5']))
+              ,'FilePUDistData'            : string( os.path.join( paths.main, 'aux', 'RunII2017Rereco_RunBCDEF_v1v2topUp_25ns_PUXsec69200nb_Feb8-2018.root'))
+              ,'applyFatJetMuonTaggingV2'  : True  # For now necessary to run SF templates, should automate TODO
+              ,'fatJetDoubleTagging'       : True  # For now necessary to run SF templates, should automate TODO
+              ,'useSoftDropSubjets'        : True  # For now necessary to run SF templates, should automate TODO
+              ,'produceDDXSFtemplates'     : True
+              ,'chooseDDXtagger'           : string(tagger)
+              }
+
+  # To clone dictionary items
+  from copy import deepcopy
+  # Add systematics campaigns by cloning and only modding the proper 
+  sys_name = "_BFRAGUP"
+  # Clone default SF config with sys_name 
+  info[run_name_tagger+sys_name] = deepcopy(info[run_name_tagger])
+  # Change final_output name to include sys
+  info[run_name_tagger+sys_name]['final_output'] = SF_output.format(sys_name)
+  # Add sys specific configs
+  for name in samples_data + samples_qcd:
+    info[run_name_tagger+sys_name]["btagvalidation_cfg"][name]['doBFrag'] = True
+    info[run_name_tagger+sys_name]["btagvalidation_cfg"][name]['doBFragUp'] = True
+
+  sys_name = "_BFRAGDOWN"
+  info[run_name_tagger+sys_name] = deepcopy(info[run_name_tagger])
+  info[run_name_tagger+sys_name]['final_output'] = SF_output.format(sys_name)
+  for name in samples_data + samples_qcd:
+    info[run_name_tagger+sys_name]["btagvalidation_cfg"][name]['doBFrag'] = True
+    info[run_name_tagger+sys_name]["btagvalidation_cfg"][name]['doBFragDown'] = True
+
+  sys_name = "_CFRAG"
+  info[run_name_tagger+sys_name] = deepcopy(info[run_name_tagger])
+  info[run_name_tagger+sys_name]['final_output'] = SF_output.format(sys_name)
+  for name in samples_data + samples_qcd:
+    info[run_name_tagger+sys_name]["btagvalidation_cfg"][name]['doCFrag'] = True
+
+  sys_name = "_K0L"
+  info[run_name_tagger+sys_name] = deepcopy(info[run_name_tagger])
+  info[run_name_tagger+sys_name]['final_output'] = SF_output.format(sys_name),
+  for name in samples_data + samples_qcd:
+    info[run_name_tagger+sys_name]["btagvalidation_cfg"][name]['doK0L'] = True
 
 
 # FIll Comm Run
-for name in samples_data + samples_qcd:
-      info[Comm_run]['samples'][name] = ['0']
-      if name in samples_data: _runOnData = True
-      else: _runOnData = False
-      info[Comm_run]['btagvalidation_cfg'][name] = {
-            'DEBUG'                      : False
-            ,'runOnData'                 : _runOnData
-            ,'fatJetPtMin'               : 350.
-            ,'triggerSelection'          : string( ','.join(['HLT_BTagMu_AK8Jet300_Mu5' + "'", "'" + 'HLT_BTagMu_Jet300_Mu5']))
-            ,'FilePUDistData'            : string( os.path.join( paths.main, 'aux', 'RunII2017Rereco_RunBCDEF_v1v2topUp_25ns_PUXsec69200nb_Feb8-2018.root'))
-            ,'produceDeepDoubleXCommissioning' : False
-            }
+# for name in samples_data + samples_qcd:
+#       info[Comm_run]['samples'][name] = ['0']
+#       if name in samples_data: _runOnData = True
+#       else: _runOnData = False
+#       info[Comm_run]['btagvalidation_cfg'][name] = {
+#             'DEBUG'                      : False
+#             ,'runOnData'                 : _runOnData
+#             ,'fatJetPtMin'               : 350.
+#             ,'triggerSelection'          : string( ','.join(['HLT_BTagMu_AK8Jet300_Mu5' + "'", "'" + 'HLT_BTagMu_Jet300_Mu5']))
+#             ,'FilePUDistData'            : string( os.path.join( paths.main, 'aux', 'RunII2017Rereco_RunBCDEF_v1v2topUp_25ns_PUXsec69200nb_Feb8-2018.root'))
+#             ,'applyFatJetMuonTaggingV2'  : True  # For now necessary to run SF templates
+#             ,'fatJetDoubleTagging'       : True  # For now necessary to run SF templates
+#             ,'useSoftDropSubjets'        : True  # For now necessary to run SF templates
+#             ,'produceDeepDoubleXCommissioning' : False
+#             }
+
+if __name__ == "__main__":
+  import pprint
+  pprint.pprint(info, depth=2)
 
 # for name in samples_qcd:
 #       info[run_name]['samples'][name] = ['0']
