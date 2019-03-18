@@ -2,6 +2,9 @@
 
 ### DoubleX commissioing 2017
 
+# v03
+#datasuff ="-17Nov2017-v1_v03_20190222"
+#qcdsuff ="_MuEnrichedPt5_TuneCP5_13TeV_pythia8_v03_20190222"
 datasuff ="-17Nov2017-v1_v04_20190228"
 qcdsuff ="_MuEnrichedPt5_TuneCP5_13TeV_pythia8_v04_20190228"
 samples_data = [  'BTagMu_Run2017B'+datasuff,
@@ -35,7 +38,7 @@ for sample in samples_data:
                 'type'    : 'Data',
                 'group'   : 'DATA',
                 'subsample' : {
-                    '0' : sample,
+                    '0' : '2017/9_4_X_v04/'+sample,
                     }
                 }
 for sample, xs in zip(samples_qcd, xs_qcd):
@@ -44,12 +47,78 @@ for sample, xs in zip(samples_qcd, xs_qcd):
                 'type'    : 'MC',
                 'group'   : 'QCDMu+',
                 'subsample' : {
-                    '0' : sample,
+                    '0' : '2017/9_4_X_v04/'+sample,
                     },
                 'xs':{
                     '0' : xs,
                     }
       }
+
+
+### DoubleX commissioing 2016
+
+datasuff ="-17Jul2018-v1_9_4_X_v04"
+qcdsuff ="_MuEnrichedPt5_TuneCUETP8M1_13TeV_pythia8_9_4_X_v04"
+qcdsuffext ="_MuEnrichedPt5_TuneCUETP8M1_13TeV_pythia8Ext_9_4_X_v04"
+samples_data = [  'BTagMu_Run2016B'+"-17Jul2018_ver2-v1_9_4_X_v04",
+                  'BTagMu_Run2016C'+datasuff,
+                  'BTagMu_Run2016D'+datasuff,
+                  'BTagMu_Run2016E'+datasuff,
+                  'BTagMu_Run2016F'+datasuff,
+                  'BTagMu_Run2016G'+datasuff,
+                  'BTagMu_Run2016H'+datasuff,
+                  ]
+samples_qcd = [   'QCD_Pt-170to300'+qcdsuff,
+                  'QCD_Pt-300to470'+qcdsuff,
+                  'QCD_Pt-470to600'+qcdsuff,
+                  'QCD_Pt-600to800'+qcdsuff,
+                  'QCD_Pt-800to1000'+qcdsuff,
+                  'QCD_Pt-1000toInf'+qcdsuff,
+                  ]
+samples_qcd_ext = ['QCD_Pt-170to300'+qcdsuffext,
+                  'QCD_Pt-300to470'+qcdsuffext,
+                  'QCD_Pt-470to600'+qcdsuffext,
+                  'QCD_Pt-600to800'+qcdsuffext,
+                  'QCD_Pt-800to1000'+qcdsuffext,
+                  'QCD_Pt-1000toInf'+qcdsuffext,
+                  ]
+
+xs_qcd = [  8654.49,
+            797.35,
+            79.02,
+            25.095,
+            4.707,
+            1.621
+            ]
+
+# Fill infos for each sample
+for sample in samples_data:
+  info[sample] = {
+                'type'    : 'Data',
+                'group'   : 'DATA',
+                'subsample' : {
+                    '0' : '2016/9_4_X_v04/'+sample,
+                    }
+                }
+for sample, sample_ext, xs in zip(samples_qcd, samples_qcd_ext, xs_qcd):
+  print sample, xs
+  info[sample] = {
+                'type'    : 'MC',
+                'group'   : 'QCDMu+',
+                'subsample' : {
+                    '0' : '2016/9_4_X_v04/'+sample,
+                    '1' : '2016/9_4_X_v04/'+sample_ext,
+                    },
+                'xs':{
+                    '0' : xs,
+                    '1' : xs,
+                    }
+      }
+
+if __name__ == "__main__":
+  import pprint
+  pprint.pprint(info, depth=3)
+
 
 
 #### First attempt at producing comm plots - Jan10-2018

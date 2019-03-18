@@ -12,17 +12,20 @@ def string(txt):
 ##############################
 ##############################
 taggers = ["DoubleB", "DDBvL"]
-run_name = 'Run2017'
+run_names = ['Run2016', 'Run2017']
 
 datasuff ="-17Nov2017-v1_v04_20190228"
 qcdsuff ="_MuEnrichedPt5_TuneCP5_13TeV_pythia8_v04_20190228"
-samples_data = [  'BTagMu_Run2017B'+datasuff,
+# v03
+#datasuff ="-17Nov2017-v1_v03_20190222"
+#qcdsuff ="_MuEnrichedPt5_TuneCP5_13TeV_pythia8_v03_20190222"
+samples17_data = [  'BTagMu_Run2017B'+datasuff,
                   'BTagMu_Run2017C'+datasuff,
                   'BTagMu_Run2017D'+datasuff,
                   'BTagMu_Run2017E'+datasuff,
                   'BTagMu_Run2017F'+datasuff,
                   ]
-samples_qcd = [   'QCD_Pt-170to300'+qcdsuff,
+samples17_qcd = [   'QCD_Pt-170to300'+qcdsuff,
                   'QCD_Pt-300to470'+qcdsuff,
                   'QCD_Pt-470to600'+qcdsuff,
                   'QCD_Pt-600to800'+qcdsuff,
@@ -30,73 +33,93 @@ samples_qcd = [   'QCD_Pt-170to300'+qcdsuff,
                   'QCD_Pt-1000toInf'+qcdsuff,
                   ]
 
+datasuff16 ="-17Jul2018-v1_9_4_X_v04"
+qcdsuff16 ="_MuEnrichedPt5_TuneCUETP8M1_13TeV_pythia8_9_4_X_v04"
+samples16_data = [  'BTagMu_Run2016B'+"-17Jul2018_ver2-v1_9_4_X_v04",
+                  'BTagMu_Run2016C'+datasuff16,
+                  'BTagMu_Run2016D'+datasuff16,
+                  'BTagMu_Run2016E'+datasuff16,
+                  'BTagMu_Run2016F'+datasuff16,
+                  'BTagMu_Run2016G'+datasuff16,
+                  'BTagMu_Run2016H'+datasuff16,
+                  ]
+samples16_qcd = [   'QCD_Pt-170to300'+qcdsuff16,
+                  'QCD_Pt-300to470'+qcdsuff16,
+                  'QCD_Pt-470to600'+qcdsuff16,
+                  'QCD_Pt-600to800'+qcdsuff16,
+                  'QCD_Pt-800to1000'+qcdsuff16,
+                  'QCD_Pt-1000toInf'+qcdsuff16,
+                  ]
+
 # Source for config/general.py
 info = {
 }
 
-# For each tagger in campaign
-for tagger in taggers:
-  # Fill basic dict
-  run_name_tagger = run_name + tagger
-  SF_output = run_name+'_'+tagger+'{}.root' # Keep {} for automatic sys name formatin
-  info[run_name_tagger] = {
-    # Dictionary of all samples with their list of subsamples. They are defined in samples.py
-    'samples' :{},
-    # Name of the root final with final histograms
-    'final_output' : SF_output.format(""),
-    # Dictionary of all variables that need to be changed for each campaign
-    'btagvalidation_cfg'  : { },
-  }
+# For each Run
+for run_name, samples_data, samples_qcd in zip(run_names, [samples16_data, samples17_data], [samples16_qcd, samples17_qcd]):
+  # For each tagger in campaign
+  for tagger in taggers:
+    # Fill basic dict
+    run_name_tagger = run_name + tagger
+    SF_output = run_name+'_'+tagger+'{}.root' # Keep {} for automatic sys name formatin
+    info[run_name_tagger] = {
+      # Dictionary of all samples with their list of subsamples. They are defined in samples.py
+      'samples' :{},
+      # Name of the root final with final histograms
+      'final_output' : SF_output.format(""),
+      # Dictionary of all variables that need to be changed for each campaign
+      'btagvalidation_cfg'  : { },
+    }
 
-  # Fill samples and configs
-  for name in samples_data + samples_qcd:
-        info[run_name_tagger]['samples'][name] = ['0']
-        if name in samples_data: _runOnData = True
-        else: _runOnData = False
-        info[run_name_tagger]['btagvalidation_cfg'][name] = {
-              'DEBUG'                      : False
-              ,'runOnData'                 : _runOnData
-              ,'fatJetPtMin'               : 350.
-              ,'triggerSelection'          : string( ','.join(['HLT_BTagMu_AK8Jet300_Mu5' + "'", "'" + 'HLT_BTagMu_Jet300_Mu5']))
-              ,'FilePUDistData'            : string( os.path.join( paths.main, 'aux', 'RunII2017Rereco_RunBCDEF_v1v2topUp_25ns_PUXsec69200nb_Feb8-2018.root'))
-              ,'applyFatJetMuonTaggingV2'  : True  # For now necessary to run SF templates, should automate TODO
-              ,'fatJetDoubleTagging'       : True  # For now necessary to run SF templates, should automate TODO
-              ,'useSoftDropSubjets'        : True  # For now necessary to run SF templates, should automate TODO
-              ,'produceDDXSFtemplates'     : True
-              ,'chooseDDXtagger'           : string(tagger)
-              }
+    # Fill samples and configs
+    for name in samples_data + samples_qcd:
+          info[run_name_tagger]['samples'][name] = ['0']
+          if name in samples_data: _runOnData = True
+          else: _runOnData = False
+          info[run_name_tagger]['btagvalidation_cfg'][name] = {
+                'DEBUG'                      : False
+                ,'runOnData'                 : _runOnData
+                ,'fatJetPtMin'               : 350.
+                ,'triggerSelection'          : string( ','.join(['HLT_BTagMu_AK8Jet300_Mu5' + "'", "'" + 'HLT_BTagMu_Jet300_Mu5']))
+                ,'FilePUDistData'            : string( os.path.join( paths.main, 'aux', 'RunII2017Rereco_RunBCDEF_v1v2topUp_25ns_PUXsec69200nb_Feb8-2018.root'))
+                ,'applyFatJetMuonTaggingV2'  : True  # For now necessary to run SF templates, should automate TODO
+                ,'fatJetDoubleTagging'       : True  # For now necessary to run SF templates, should automate TODO
+                ,'useSoftDropSubjets'        : True  # For now necessary to run SF templates, should automate TODO
+                ,'produceDDXSFtemplates'     : True
+                ,'chooseDDXtagger'           : string(tagger)
+                }
 
-  # To clone dictionary items
-  from copy import deepcopy
-  # Add systematics campaigns by cloning and only modding the proper 
-  sys_name = "_BFRAGUP"
-  # Clone default SF config with sys_name 
-  info[run_name_tagger+sys_name] = deepcopy(info[run_name_tagger])
-  # Change final_output name to include sys
-  info[run_name_tagger+sys_name]['final_output'] = SF_output.format(sys_name)
-  # Add sys specific configs
-  for name in samples_data + samples_qcd:
-    info[run_name_tagger+sys_name]["btagvalidation_cfg"][name]['doBFrag'] = True
-    info[run_name_tagger+sys_name]["btagvalidation_cfg"][name]['doBFragUp'] = True
+    # To clone dictionary items
+    from copy import deepcopy
+    # Add systematics campaigns by cloning and only modding the proper 
+    sys_name = "_BFRAGUP"
+    # Clone default SF config with sys_name 
+    info[run_name_tagger+sys_name] = deepcopy(info[run_name_tagger])
+    # Change final_output name to include sys
+    info[run_name_tagger+sys_name]['final_output'] = SF_output.format(sys_name)
+    # Add sys specific configs
+    for name in samples_data + samples_qcd:
+      info[run_name_tagger+sys_name]["btagvalidation_cfg"][name]['doBFrag'] = True
+      info[run_name_tagger+sys_name]["btagvalidation_cfg"][name]['doBFragUp'] = True
 
-  sys_name = "_BFRAGDOWN"
-  info[run_name_tagger+sys_name] = deepcopy(info[run_name_tagger])
-  info[run_name_tagger+sys_name]['final_output'] = SF_output.format(sys_name)
-  for name in samples_data + samples_qcd:
-    info[run_name_tagger+sys_name]["btagvalidation_cfg"][name]['doBFrag'] = True
-    info[run_name_tagger+sys_name]["btagvalidation_cfg"][name]['doBFragDown'] = True
+    sys_name = "_BFRAGDOWN"
+    info[run_name_tagger+sys_name] = deepcopy(info[run_name_tagger])
+    info[run_name_tagger+sys_name]['final_output'] = SF_output.format(sys_name)
+    for name in samples_data + samples_qcd:
+      info[run_name_tagger+sys_name]["btagvalidation_cfg"][name]['doBFrag'] = True
+      info[run_name_tagger+sys_name]["btagvalidation_cfg"][name]['doBFragDown'] = True
 
-  sys_name = "_CFRAG"
-  info[run_name_tagger+sys_name] = deepcopy(info[run_name_tagger])
-  info[run_name_tagger+sys_name]['final_output'] = SF_output.format(sys_name)
-  for name in samples_data + samples_qcd:
-    info[run_name_tagger+sys_name]["btagvalidation_cfg"][name]['doCFrag'] = True
+    sys_name = "_CFRAG"
+    info[run_name_tagger+sys_name] = deepcopy(info[run_name_tagger])
+    info[run_name_tagger+sys_name]['final_output'] = SF_output.format(sys_name)
+    for name in samples_data + samples_qcd:
+      info[run_name_tagger+sys_name]["btagvalidation_cfg"][name]['doCFrag'] = True
 
-  sys_name = "_K0L"
-  info[run_name_tagger+sys_name] = deepcopy(info[run_name_tagger])
-  info[run_name_tagger+sys_name]['final_output'] = SF_output.format(sys_name),
-  for name in samples_data + samples_qcd:
-    info[run_name_tagger+sys_name]["btagvalidation_cfg"][name]['doK0L'] = True
+    sys_name = "_K0L"
+    info[run_name_tagger+sys_name] = deepcopy(info[run_name_tagger])
+    info[run_name_tagger+sys_name]['final_output'] = SF_output.format(sys_name),
+    for name in samples_data + samples_qcd:
+      info[run_name_tagger+sys_name]["btagvalidation_cfg"][name]['doK0L'] = True
 
 
 # FIll Comm Run

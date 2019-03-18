@@ -36,6 +36,7 @@ class HistogramTool(object):
     self.send_jobs                = configuration.general.send_jobs
     self.batch_templates          = configuration.general.batch_templates['histogram']
     self.queue_lxbatch            = configuration.general.queue_lxbatch
+    self.queue_condor            = configuration.general.queue_condor
 
     # ------ Samples -------
     self.samples_info             = configuration.samples.info
@@ -118,6 +119,7 @@ class HistogramTool(object):
               _batch_arguments = {'<' + _k + '>': _vv for _k,_vv in self.config_btagvalidation.iteritems()}
               # Setup some arguments manually
               _batch_arguments['<path_batch>']              = _path_batch
+              _batch_arguments['<condor_queue>']              = self.queue_condor
               _batch_arguments['<path_batch_file_wo_ext>']  = _path_batch_file_wo_ext
               _batch_arguments['<input_files>']             = _input_files
               _batch_arguments['<output_file>']             = _output_file
