@@ -34,3 +34,15 @@ To redefine WPs for DDX taggers go to (note these names should correspon to choo
   
   For pileup up and down, you use appropriate up/down PU Profile by setting `File_PUDistData` in `test/btagvalidation_cfg.py` properly. (usually +- 5% nominal minBias xsec)
   
+ # Using PyWrapper Tools for to create campaigns and submit jobs
+ - Open a proxy and copy it to a folder readable by condor (not `/tmp`)
+ - In `config/paths.py` specify the path to proxy and it is recommended to specify a path for results that has sufficient space.
+ - Define samples available to the wrapper in `config/samples.py`, they should be relatie to the overall paths specified in `config/general.py`
+ - Define default `btagvalidation_cfg.py` options in `config/btagvalidation.py`
+ - Define actual campaigns to run in `config/campaigns.py` including list of samples and configs differing from those in `config/btagvalidation.py`, \
+ for similar campaigns such as running systematics using `copy.deepcopy` on the dictionary and modifying only the pertinent settings is recommended.
+ - Finally in `config/general.py` specify
+ 	- overall paths to samples
+ 	- `number_of_files` to include in each job
+ 	- `number_of_jobs` to submit
+ 	- Set `force_all=True` to overwrite completed jobs, `force_all=False` allows you to softly resubmit failed jobs

@@ -115,6 +115,12 @@ for run_name, samples_data, samples_qcd in zip(run_names, [samples16_data, sampl
     for name in samples_data + samples_qcd:
       info[run_name_tagger+sys_name]["btagvalidation_cfg"][name]['doCFrag'] = True
 
+    sys_name = "_CDFRAG"
+    info[run_name_tagger+sys_name] = deepcopy(info[run_name_tagger])
+    info[run_name_tagger+sys_name]['final_output'] = SF_output.format(sys_name)
+    for name in samples_data + samples_qcd:
+      info[run_name_tagger+sys_name]["btagvalidation_cfg"][name]['doCDFrag'] = True
+
     sys_name = "_K0L"
     info[run_name_tagger+sys_name] = deepcopy(info[run_name_tagger])
     info[run_name_tagger+sys_name]['final_output'] = SF_output.format(sys_name),
