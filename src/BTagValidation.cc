@@ -1200,10 +1200,7 @@ void BTagValidation::createJetHistos_SF(const TString& histoTag, const TString& 
     if ( LTSVvar == TString("tau1VertexMassCorr")) high_LTSV_bound = 30.;
   
     for(unsigned int ipt=0; ipt < ptStr.size(); ipt++ ){
-        if(DEBUG_ && DEBUGlevel_>1 )std::cout <<  "  DeepDoubleBvLQCD "  << std::endl;
-        // Not needed for SF measurement
-        // AddHisto(histoTag+"_"+tagger+"_"+ptStr.at(ipt) ,";"+tagger+"_"+ptStr.at(ipt)+";;",100,low_tag_bound, 1.);
-
+        
         if(DEBUG_ && DEBUGlevel_>1 )std::cout << "  JP notag "  << std::endl;
         AddHisto(histoTag+"_"+LTSVvar+"_all_"+ptStr.at(ipt), ";"+LTSVvar+"_all_"+ptStr.at(ipt)+";;", 50, 0., high_LTSV_bound);
         for(unsigned int iWP=0; iWP < WPStr.size(); iWP++ ){
@@ -1213,7 +1210,7 @@ void BTagValidation::createJetHistos_SF(const TString& histoTag, const TString& 
             AddHisto(histoTag+"_"+LTSVvar+"_"+tagger+"_"+WPStr.at(iWP)+"_fail_"+ptStr.at(ipt), LTSVvar+"_"+tagger+"_"+WPStr.at(iWP)+"_fail_"+ptStr.at(ipt), 50, 0., high_LTSV_bound);
         }
 
-        AddHisto(histoTag+"_"+LTSVvar+"_all_JESup_"+ptStr.at(ipt), ";"+LTSVvar+"_all_JESup_"+ptStr.at(ipt)+";;", 50, 0., high_LTSV_bound);
+        AddHisto(histoTag+"_"+LTSVvar+"_all_"+ptStr.at(ipt)+"_JESup", ";"+LTSVvar+"_all_"+ptStr.at(ipt)+"_JESup"+";;", 50, 0., high_LTSV_bound);
         for(unsigned int iWP=0; iWP < WPStr.size(); iWP++ ){
             if(DEBUG_ && DEBUGlevel_>1 )std::cout << "  " << "WP = " << WPStr.at(iWP) << " JESup"<<std::endl;
 
@@ -1222,7 +1219,7 @@ void BTagValidation::createJetHistos_SF(const TString& histoTag, const TString& 
 
         }
 
-        AddHisto(histoTag+"_"+LTSVvar+"_all_JESdown_"+ptStr.at(ipt), ";"+LTSVvar+"_all_JESdown_"+ptStr.at(ipt)+";;", 50, 0., high_LTSV_bound);
+        AddHisto(histoTag+"_"+LTSVvar+"_all_"+ptStr.at(ipt)+"_JESdown", ";"+LTSVvar+"_all_"+ptStr.at(ipt)+"_JESdown"+";;", 50, 0., high_LTSV_bound);
         for(unsigned int iWP=0; iWP < WPStr.size(); iWP++ ){
             if(DEBUG_ && DEBUGlevel_>1 )std::cout << "  " << "WP = " << WPStr.at(iWP) << " JESdown"<<std::endl;
 
@@ -1935,8 +1932,7 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         //fill histo for DoubleB SF calculation / templates: 
         if(produceDDXSFtemplates_) {
             TString taggerTString = chooseDDXtagger_; // should implement this typefix properly
-            if (DEBUG_) std::cout << "nSV : " << FatJetInfo.Jet_nSV_fat[iJet] << std::endl;            
-            std::cout << "nSV : " << FatJetInfo.Jet_nSV_fat[iJet] << " , " << FatJetInfo.Jet_nSV_fat[iJet] << std::endl;
+            if (DEBUG_) std::cout << "nSV : " << FatJetInfo.Jet_nSV_fat[iJet] << std::endl;
             fillJetHistos_SF(FatJetInfo, iJet, isGSPbb, isGSPcc ,"FatJet", "JP", false, taggerTString , WPmap, ptbinmap, wtPU*wtFatJet);
             if (FatJetInfo.Jet_nSV_fat[iJet]>0)  fillJetHistos_SF(FatJetInfo, iJet, isGSPbb, isGSPcc ,"FatJet", "tau1VertexMassCorr",   true,  taggerTString,  WPmap, ptbinmap, wtPU*wtFatJet);
             if (FatJetInfo.Jet_nSV_fat[iJet]>0)  fillJetHistos_SF(FatJetInfo, iJet, isGSPbb, isGSPcc ,"FatJet", "JPhasSV",              false,  taggerTString, WPmap, ptbinmap, wtPU*wtFatJet);
@@ -2661,7 +2657,7 @@ void BTagValidation::fillJetHistos_DeepDoubleX(const JetInfoBranches& JetInfo, c
                                         const TString& histoTag, const TString& LTSVvar, const bool useSVmass,
                                         const TString& tagger, const std::map<TString,double>&  WPmap, const std::map<TString,std::vector<int>>& ptbinmap, 
                                         const double wt) {
-
+    
     if (DEBUG_) std::cout << "FILLING SF HISTOS with " << LTSVvar << std::endl;
 
     float jetpt      = JetInfo.Jet_pt[iJet];
@@ -2674,15 +2670,17 @@ void BTagValidation::fillJetHistos_DeepDoubleX(const JetInfoBranches& JetInfo, c
     }
     float tagger_value = 0.;
     if (tagger == TString("DoubleB")) tagger_value  = JetInfo.Jet_DoubleSV[iJet];
-    if (tagger == TString("DDBvL"))   tagger_value  = JetInfo.Jet_DeepDoubleBvLHbb[iJet];
-    if (tagger == TString("DDCvL"))   tagger_value  = JetInfo.Jet_DeepDoubleCvLHcc[iJet];
-    if (tagger == TString("DDCvB"))   tagger_value  = JetInfo.Jet_DeepDoubleCvBHcc[iJet];
+    if (tagger == TString("DDBvL"))   tagger_value  = JetInfo.Jet_MassIndDeepDoubleBvLHbb[iJet];
+    if (tagger == TString("DDCvL"))   tagger_value  = JetInfo.Jet_MassIndDeepDoubleCvLHcc[iJet];
+    if (tagger == TString("DDCvB"))   tagger_value  = JetInfo.Jet_MassIndDeepDoubleCvBHcc[iJet];
+    if (tagger == TString("DeepAK8bb"))   tagger_value  = JetInfo.Jet_DeepBoostedJetbbvsLight[iJet];
+    if (tagger == TString("DeepAK8cc"))   tagger_value  = JetInfo.Jet_DeepBoostedJetccvsLight[iJet];
+    if (tagger == TString("DeepAK8ZHbb"))   tagger_value  = JetInfo.Jet_DeepBoostedJetZHbbvsQCD[iJet];
+    if (tagger == TString("DeepAK8ZHcc"))   tagger_value  = JetInfo.Jet_DeepBoostedJetZHccvsQCD[iJet];
     
     if (DEBUG_) std::cout << "FILLING JP/SV = "<< LTSV_value << " Filling tagger = "<< tagger_value << std::endl;
-    //if (tagger_value > 0.9 )  std::cout << "FILLING SHIT " << tagger_value << std::endl;
 
     // for SF LT method calculation - start
-
     double jesup(1.0), jesdown(1.0);
     if ( doJECUncert_ ) {
         jesup = GetJESUncert(1.0, jetpt, jeteta, jesup) ; 
@@ -2705,13 +2703,6 @@ void BTagValidation::fillJetHistos_DeepDoubleX(const JetInfoBranches& JetInfo, c
     boost::copy(ptbinmap | boost::adaptors::map_keys, std::back_inserter(ptStr));
     std::vector<TString> WPStr;
     boost::copy(WPmap | boost::adaptors::map_keys, std::back_inserter(WPStr));
-    // Not needed for SF templates
-    // //new - DoubleB - start 
-    // for(unsigned int ipt=0; ipt < ptStr.size(); ipt++ ){
-    //     if(DEBUG_ && DEBUGlevel_>1 )std::cout << ptbinmap.at(ptStr.at(ipt)).at(0) << ","<< ptbinmap.at(ptStr.at(ipt)).at(1) << ","<< ptStr.at(ipt) << " DoubleB "<<std::endl;
-    //     //if ( jetpt > ptbinmap.at(ptStr.at(ipt)).at(0) && jetpt <= ptbinmap.at(ptStr.at(ipt)).at(1) ) FillHisto(histoTag+"_"+tagger+"_"+ptStr.at(ipt), flav, isGSPbb, isGSPcc ,tagger_value  ,wt); //400-450
-    // }
-    // //new - DoubleB  -end
 
     //new - JP nominal - start 
     for(unsigned int ipt=0; ipt < ptStr.size(); ipt++ ){
@@ -2745,7 +2736,7 @@ void BTagValidation::fillJetHistos_DeepDoubleX(const JetInfoBranches& JetInfo, c
     //new - JEC up - start 
     for(unsigned int ipt=0; ipt < ptStr.size(); ipt++ ){
         if(DEBUG_ && DEBUGlevel_>1 )std::cout << ptbinmap.at(ptStr.at(ipt)).at(0) << ","<< ptbinmap.at(ptStr.at(ipt)).at(1) << "," << ptStr.at(ipt) << " notag - JESup"<<std::endl;
-        if ( jetpt_up > ptbinmap.at(ptStr.at(ipt)).at(0) && jetpt_up <= ptbinmap.at(ptStr.at(ipt)).at(1) ) FillHisto(histoTag+"_"+LTSVvar+"_all_JESup_"+ptStr.at(ipt), flav, isGSPbb, isGSPcc , LTSV_value,wt); 
+        if ( jetpt_up > ptbinmap.at(ptStr.at(ipt)).at(0) && jetpt_up <= ptbinmap.at(ptStr.at(ipt)).at(1) ) FillHisto(histoTag+"_"+LTSVvar+"_all_"+ptStr.at(ipt)+"_JESup", flav, isGSPbb, isGSPcc , LTSV_value  ,wt);
     }
 
     for(unsigned int iWP=0; iWP < WPStr.size(); iWP++ ){
@@ -2771,7 +2762,7 @@ void BTagValidation::fillJetHistos_DeepDoubleX(const JetInfoBranches& JetInfo, c
     //new - JECdown - start 
     for(unsigned int ipt=0; ipt < ptStr.size(); ipt++ ){
         if(DEBUG_ && DEBUGlevel_>1 )std::cout << ptbinmap.at(ptStr.at(ipt)).at(0) << ","<< ptbinmap.at(ptStr.at(ipt)).at(1) << "," << ptStr.at(ipt) << " notag - JESdown"<<std::endl;
-        if ( jetpt_down > ptbinmap.at(ptStr.at(ipt)).at(0) && jetpt_down <= ptbinmap.at(ptStr.at(ipt)).at(1) ) FillHisto(histoTag+"_"+LTSVvar+"_all_JESdown_"+ptStr.at(ipt), flav, isGSPbb, isGSPcc , LTSV_value,wt); 
+        if ( jetpt_down > ptbinmap.at(ptStr.at(ipt)).at(0) && jetpt_down <= ptbinmap.at(ptStr.at(ipt)).at(1) ) FillHisto(histoTag+"_"+LTSVvar+"_all_"+ptStr.at(ipt)+"_JESdown", flav, isGSPbb, isGSPcc , LTSV_value  ,wt);
     }
 
     for(unsigned int iWP=0; iWP < WPStr.size(); iWP++ ){
