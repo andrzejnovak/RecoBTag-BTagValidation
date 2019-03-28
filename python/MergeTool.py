@@ -109,6 +109,7 @@ class MergeTool(object):
       _path_histograms    = os.path.join( self.path_histograms, _c)
 
       # Make root file with merged histograms
+      print  self.path_plots_final, self.campaigns_info[_c]['final_output']
       _final = ROOT.TFile.Open( os.path.join( self.path_plots_final, self.campaigns_info[_c]['final_output']), 'recreate')
 
       # Loop over groups
@@ -175,7 +176,8 @@ class MergeTool(object):
           _final_histograms[_h].Write()
 
       # To check smootheness:
-      try:
+      #try:
+      if True:
         _pt_hat = _final.Get(_g+'__h1_pt_hat_sel')
         _cont, _bins = [], []
         _nbins = _pt_hat.GetNbinsX()
@@ -202,8 +204,8 @@ class MergeTool(object):
         for _bin, _val in zip(_print_bin, _print_cont):
           print str(_bin).ljust(6), str(np.round(_val,4)).rjust(10), "|" , "+" * int(np.round(_val))
 
-      except:
-        Print('error', "pt_hat hist print failed  , should check merged sample continuity otherwise") 
+      #except:
+      #  Print('error', "pt_hat hist print failed  , should check merged sample continuity otherwise") 
       _final.Close()
 
       Print('status', 'Final histograms saved in {0}'.format( os.path.join( self.path_plots_final, self.campaigns_info[_c]['final_output'])))

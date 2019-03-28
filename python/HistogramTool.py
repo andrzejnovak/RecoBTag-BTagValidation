@@ -48,7 +48,7 @@ class HistogramTool(object):
     # ------ Browsing options -------
     self.remote_locations         = configuration.general.remote_locations
 
-  def make_and_send_jobs(self):
+  def make_and_send_jobs(self, silent=False):
 
     Print('python_info', '\nCalled make_and_send_jobs function.')
 
@@ -69,7 +69,7 @@ class HistogramTool(object):
 
             _subsample = self.samples_info[_s]['subsample'][_ss].replace('/', '__')
 
-            Print('status', '\nSample: {0}, {1}, {2}'.format(_s, _l, _subsample))
+            if not silent: Print('status', '\nSample: {0}, {1}, {2}'.format(_s, _l, _subsample))
 
             if self.work_locally:
               _location = 'local'
@@ -91,8 +91,8 @@ class HistogramTool(object):
 
               # If file exists and it is ok, skip to next
               _output_file = _f[0].replace( self.path_samples, _path_histograms).replace( self.remote_locations['path'][_l], _path_histograms).replace( self.remote_locations['storage_element'][_l], '')
-              if check_root_file( _output_file) and not self.force_all:
-                Print('python_info','File {0} exists and skipped.'.format(_output_file))
+              if check_root_file( _output_file, silent=silent) and not self.force_all:
+                if not silent: Print('python_info','File {0} exists and skipped.'.format(_output_file))
                 continue
 
               # If using remote files, add them protocol so that is possible to open them
@@ -133,7 +133,7 @@ class HistogramTool(object):
               # Check if there is something to overwrite from campaigns.py for each sample
               if _s in self.campaigns_info[_c]['btagvalidation_cfg']:
 
-                Print('status','Overwriting configs: {0}'.format(self.campaigns_info[_c]['btagvalidation_cfg'][_s]))
+                if not silent: Print('status','Overwriting configs: {0}'.format(self.campaigns_info[_c]['btagvalidation_cfg'][_s]))
 
                 for _b in self.campaigns_info[_c]['btagvalidation_cfg'][_s]:
                   _batch_arguments['<' + _b + '>'] = self.campaigns_info[_c]['btagvalidation_cfg'][_s][_b]
@@ -144,4 +144,4 @@ class HistogramTool(object):
               _batch.make_scripts()
               # Send jobs
               if self.send_jobs:
-                _batch.send_job()
+                _batch.send_job(silent=silent)

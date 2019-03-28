@@ -11,7 +11,7 @@ def string(txt):
 
 ##############################
 ##############################
-taggers = ["DoubleB", "DDBvL"]
+taggers = ["DoubleB", "DDBvL", "DDCvL"]
 run_names = ['Run2016', 'Run2017']
 
 datasuff ="-17Nov2017-v1_v04_20190228"
@@ -88,6 +88,18 @@ for run_name, samples_data, samples_qcd in zip(run_names, [samples16_data, sampl
                 ,'produceDDXSFtemplates'     : True
                 ,'chooseDDXtagger'           : string(tagger)
                 }
+          # Year specifics
+          if "2016" in run_name:
+            info[run_name_tagger]['btagvalidation_cfg'][name]['FilePUDistData'] =
+                string( os.path.join( paths.main, 'aux', 'RunII2016BCDEFGH_PUXsec69200nb.root'))
+            info[run_name_tagger]['btagvalidation_cfg'][name]['FilePUDistMC'] =
+                string( os.path.join( paths.main, 'aux', 'PUDistMC_2016_25ns_PUDistMC_2016_25ns_Moriond17MC_PoissonOOTPU.root'))
+          elif "2017" in run_name:
+            info[run_name_tagger]['btagvalidation_cfg'][name]['FilePUDistData'] =
+                string( os.path.join( paths.main, 'aux', 'RunII2017BCDEF_17Nov2017_25ns_PUXsec69200nb.root'))
+            info[run_name_tagger]['btagvalidation_cfg'][name]['FilePUDistMC'] =
+                string( os.path.join( paths.main, 'aux', 'PUDistMC_2017_25ns_WinterMC_PUScenarioV1_PoissonOOTPU.root'))
+                
 
     # To clone dictionary items
     from copy import deepcopy
@@ -109,6 +121,29 @@ for run_name, samples_data, samples_qcd in zip(run_names, [samples16_data, sampl
       info[run_name_tagger+sys_name]["btagvalidation_cfg"][name]['doBFrag'] = True
       info[run_name_tagger+sys_name]["btagvalidation_cfg"][name]['doBFragDown'] = True
 
+    sys_name = "_PUUP"
+    info[run_name_tagger+sys_name] = deepcopy(info[run_name_tagger])
+    info[run_name_tagger+sys_name]['final_output'] = SF_output.format(sys_name)
+    for name in samples_data + samples_qcd:
+      if "2016" in run_name:
+        info[run_name_tagger+sys_name]["btagvalidation_cfg"][name]['FilePUDistData'] = 
+          string( os.path.join( paths.main, 'aux', 'RunII2016BCDEFGH_PUXsec72450nb.root'))
+      elif "2017" in run_name:
+        info[run_name_tagger+sys_name]["btagvalidation_cfg"][name]['FilePUDistData'] = 
+          string( os.path.join( paths.main, 'aux', 'RunII2017BCDEF_17Nov2017_25ns_PUXsec72450nb.root'))
+
+    sys_name = "_PUDOWN"
+    info[run_name_tagger+sys_name] = deepcopy(info[run_name_tagger])
+    info[run_name_tagger+sys_name]['final_output'] = SF_output.format(sys_name)
+    for name in samples_data + samples_qcd:
+      if "2016" in run_name:
+        info[run_name_tagger+sys_name]["btagvalidation_cfg"][name]['FilePUDistData'] = 
+          string( os.path.join( paths.main, 'aux', 'RunII2016BCDEFGH_PUXsec65550nb.root'))
+      elif "2017" in run_name:
+        info[run_name_tagger+sys_name]["btagvalidation_cfg"][name]['FilePUDistData'] = 
+          string( os.path.join( paths.main, 'aux', 'RunII2017BCDEF_17Nov2017_25ns_PUXsec65550nb.root'))
+
+
     sys_name = "_CFRAG"
     info[run_name_tagger+sys_name] = deepcopy(info[run_name_tagger])
     info[run_name_tagger+sys_name]['final_output'] = SF_output.format(sys_name)
@@ -123,7 +158,7 @@ for run_name, samples_data, samples_qcd in zip(run_names, [samples16_data, sampl
 
     sys_name = "_K0L"
     info[run_name_tagger+sys_name] = deepcopy(info[run_name_tagger])
-    info[run_name_tagger+sys_name]['final_output'] = SF_output.format(sys_name),
+    info[run_name_tagger+sys_name]['final_output'] = SF_output.format(sys_name)
     for name in samples_data + samples_qcd:
       info[run_name_tagger+sys_name]["btagvalidation_cfg"][name]['doK0L'] = True
 
