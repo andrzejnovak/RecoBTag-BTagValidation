@@ -39,7 +39,8 @@ class FileTool(object):
 
     Print('python_info', '\nCalled wrapper_gfal_ls function.')
 
-    _command = ['ls', '-l']
+    #_command = ['ls', '-l']
+    _command = ['find']
     _command.append(protocol + location)
 
     #_command = ['gfal-ls', '-l'] #,'-Hl'] #commented by rizki

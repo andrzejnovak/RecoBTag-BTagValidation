@@ -4,102 +4,76 @@
 
 info = {
   # ------------------------------------ Data ------------------------------------------
-  'crab_BTagMu_Run2017B-17Nov2017-v1_v02_20181219':{
+  'BTagMu':{
       'type'    : 'Data',
       'group'   : 'DATA',
       'subsample' : {
-          '0' : 'crab_BTagMu_Run2017B-17Nov2017-v1_v02_20181219',
+          '0' : 'Run2018A-17Sep2018-v1',
+          '1' : 'Run2018B-17Sep2018-v1',
+          '2' : 'Run2018C-17Sep2018-v1',
+          '3' : 'Run2018D-PromptReco-v2',
           }
       },
-  'crab_BTagMu_Run2017C-17Nov2017-v1_v02_20181219':{
-      'type'    : 'Data',
-      'group'   : 'DATA',
-      'subsample' : {
-          '0' : 'crab_BTagMu_Run2017C-17Nov2017-v1_v02_20181219',
-          }
-      },
-  'crab_BTagMu_Run2017D-17Nov2017-v1_v02_20181219':{
-      'type'    : 'Data',
-      'group'   : 'DATA',
-      'subsample' : {
-          '0' : 'crab_BTagMu_Run2017D-17Nov2017-v1_v02_20181219',
-          }
-      },
-  'crab_BTagMu_Run2017E-17Nov2017-v1_v02_20181219':{
-      'type'    : 'Data',
-      'group'   : 'DATA',
-      'subsample' : {
-          '0' : 'crab_BTagMu_Run2017E-17Nov2017-v1_v02_20181219',
-          }
-      },
-  'crab_BTagMu_Run2017F-17Nov2017-v1_v02_20181219':{
-      'type'    : 'Data',
-      'group'   : 'DATA',
-      'subsample' : {
-          '0' : 'crab_BTagMu_Run2017F-17Nov2017-v1_v02_20181219',
-          }
-      },
-
-  'crab_QCD_Pt-170to300_MuEnrichedPt5_TuneCP5_13TeV_pythia8_v02_20181219':{
+  'QCD_Pt-170to300_MuEnrichedPt5_TuneCP5_13TeV_pythia8':{
       'type'    : 'MC',
       'group'   : 'QCDMu+',
       'subsample' : {
-          '0' : 'crab_QCD_Pt-170to300_MuEnrichedPt5_TuneCP5_13TeV_pythia8_v02_20181219',
+          '0' : 'QCD_Pt-170to300_MuEnrichedPt5_TuneCP5_13TeV_pythia8',
           },
       'xs':{
           '0' : 8292.982,
           }
       },
 
-  'crab_QCD_Pt-300to470_MuEnrichedPt5_TuneCP5_13TeV_pythia8_v02_20181219':{
+  'QCD_Pt-300to470_MuEnrichedPt5_TuneCP5_13TeV_pythia8':{
       'type'    : 'MC',
       'group'   : 'QCDMu+',
       'subsample' : {
-          '0' : 'crab_QCD_Pt-300to470_MuEnrichedPt5_TuneCP5_13TeV_pythia8_v02_20181219',
+          '0' : 'QCD_Pt-300to470_MuEnrichedPt5_TuneCP5_13TeV_pythia8',
           },
       'xs':{
           '0' : 797.35,
           }
       },
 
-  'crab_QCD_Pt-470to600_MuEnrichedPt5_TuneCP5_13TeV_pythia8_v02_20181219':{
+  'QCD_Pt-470to600_MuEnrichedPt5_TuneCP5_13TeV_pythia8':{
       'type'    : 'MC',
       'group'   : 'QCDMu+',
       'subsample' : {
-          '0' : 'crab_QCD_Pt-470to600_MuEnrichedPt5_TuneCP5_13TeV_pythia8_v02_20181219',
+          '0' : 'QCD_Pt-470to600_MuEnrichedPt5_TuneCP5_13TeV_pythia8',
           },
       'xs':{
           '0' : 56.59,
           }
       },
 
-  'crab_QCD_Pt-600to800_MuEnrichedPt5_TuneCP5_13TeV_pythia8_v02_20181219':{
+  'QCD_Pt-600to800_MuEnrichedPt5_TuneCP5_13TeV_pythia8':{
       'type'    : 'MC',
       'group'   : 'QCDMu+',
       'subsample' : {
-          '0' : 'crab_QCD_Pt-600to800_MuEnrichedPt5_TuneCP5_13TeV_pythia8_v02_20181219',
+          '0' : 'QCD_Pt-600to800_MuEnrichedPt5_TuneCP5_13TeV_pythia8',
           },
       'xs':{
           '0' : 25.10,
           }
       },
 
-  'crab_QCD_Pt-800to1000_MuEnrichedPt5_TuneCP5_13TeV_pythia8_v02_20181219':{
+  'QCD_Pt-800to1000_MuEnrichedPt5_TuneCP5_13TeV_pythia8':{
       'type'    : 'MC',
       'group'   : 'QCDMu+',
       'subsample' : {
-          '0' : 'crab_QCD_Pt-800to1000_MuEnrichedPt5_TuneCP5_13TeV_pythia8_v02_20181219',
+          '0' : 'QCD_Pt-800to1000_MuEnrichedPt5_TuneCP5_13TeV_pythia8',
           },
       'xs':{
           '0' : 4.71,
           }
       },
 
-  'crab_QCD_Pt-1000toInf_MuEnrichedPt5_TuneCP5_13TeV_pythia8_v02_20181219':{
+  'QCD_Pt-1000toInf_MuEnrichedPt5_TuneCP5_13TeV_pythia8':{
       'type'    : 'MC',
       'group'   : 'QCDMu+',
       'subsample' : {
-          '0' : 'crab_QCD_Pt-1000toInf_MuEnrichedPt5_TuneCP5_13TeV_pythia8_v02_20181219',
+          '0' : 'QCD_Pt-1000toInf_MuEnrichedPt5_TuneCP5_13TeV_pythia8',
           },
       'xs':{
           '0' : 1.62,

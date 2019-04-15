@@ -50,13 +50,10 @@ remote_locations = {
     # 'eos' : '/srm-eoscms.cern.ch:8443/srm/v2/server?SFN=', # Used for lcg
   },
   'path'   : {
-      'eos' : '/eos/cms/store/group/phys_btag/BoostedBTag/BTagNTuples/2017/9_4_X_v2/'
-    #'eos' : '/eos/cms/store/group/phys_btag/BoostedBTag/BTagNTuples/2017/9_4_X',   # added by rizki Jan10-2018
-    #'eos' : 'store/group/phys_btag/BoostedBTag/BTagNTuples/2017/9_4_X',   # Used for gfal
-    # 'eos' : 'eos/cms/store/group/phys_btag/BoostedBTag/BTagNTuples/2017/9_4_X', # Used for lcg
+      'eos' : '/eos/cms/store/group/phys_btag/BoostedBTag/BTagNTuples/2018/10_2_X_9bc62860/'
   },
   'path_ex': {
-    'eos' : '/eos/cms/store/group/phys_btag/BoostedBTag/BTagNTuples/2017/9_4_X_v2/',
+    'eos' : '/eos/cms/store/group/phys_btag/BoostedBTag/BTagNTuples/2018/10_2_X_9bc62860/',
   },
   'protocol': {
     'eos'  : '', # added by rizki Jan10-2018
