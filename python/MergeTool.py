@@ -1,6 +1,7 @@
 import os
 import copy
 import subprocess as sp
+import numpy as np
 
 import ROOT
 
@@ -108,6 +109,7 @@ class MergeTool(object):
       _path_histograms    = os.path.join( self.path_histograms, _c)
 
       # Make root file with merged histograms
+      print  self.path_plots_final, self.campaigns_info[_c]['final_output']
       _final = ROOT.TFile.Open( os.path.join( self.path_plots_final, self.campaigns_info[_c]['final_output']), 'recreate')
 
       # Loop over groups
@@ -173,6 +175,37 @@ class MergeTool(object):
         for _h in sorted(_final_histograms.keys()):
           _final_histograms[_h].Write()
 
+      # To check smootheness:
+      #try:
+      if True:
+        _pt_hat = _final.Get(_g+'__h1_pt_hat_sel')
+        _cont, _bins = [], []
+        _nbins = _pt_hat.GetNbinsX()
+        for i in range(_nbins):
+          _cont.append(_pt_hat.GetBinContent(i))
+          _bins.append(_pt_hat.GetBinCenter(i))
+        for ix, _cont_val in enumerate(_cont[::-1]):
+          if _cont_val > 0.: break
+        for ix, _bin in enumerate(_bins[::-1]):
+          if _bin < 1400.: break
+        _set_last = ix
+        _cont = _cont[3:-_set_last]
+        _bins = _bins[3:-_set_last]
+        _rebin = np.round(len(_cont)/40)
+        _print_bin, _print_cont = [], [] 
+        for i in range(40):
+          _print_cont.append(np.sum(_cont[i*_rebin : (i+1)*_rebin]))
+          _print_bin.append(_bins[i*_rebin -_rebin])
+        _print_cont = np.array(_print_cont)
+        _print_cont = np.sqrt(np.interp(_print_cont, (_print_cont.min(), _print_cont.max()), (1, 10000)))-1
+        print "Sqrt count histogram to account for larger scale variation -- should be smooth"
+        print str("  pT").ljust(6), "sqrt count".rjust(10)
+        print "-"*50
+        for _bin, _val in zip(_print_bin, _print_cont):
+          print str(_bin).ljust(6), str(np.round(_val,4)).rjust(10), "|" , "+" * int(np.round(_val))
+
+      #except:
+      #  Print('error', "pt_hat hist print failed  , should check merged sample continuity otherwise") 
       _final.Close()
 
       Print('status', 'Final histograms saved in {0}'.format( os.path.join( self.path_plots_final, self.campaigns_info[_c]['final_output'])))

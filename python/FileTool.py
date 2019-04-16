@@ -97,7 +97,6 @@ class FileTool(object):
 
     # Loop over samples
     for _s in self.samples:
-
       Print('status', '\nSample: {0}'.format(_s))
 
       # Loop over all remote locations
@@ -107,31 +106,33 @@ class FileTool(object):
 
         # Browse for the sample files
         try:
+          for _subsample in self.samples_info[_s]['subsample'].values():
 
-          # Get LFNs
-          _remote_path  = os.path.join( self.remote_locations['storage_element'][_l], self.remote_locations['path'][_l], _s)
-          _remote_lfns  = self._wrapper_gfal_ls_r( _remote_path, self.remote_locations['protocol'][_l])
+            # Get LFNs
+            _remote_path  = os.path.join( self.remote_locations['storage_element'][_l], self.remote_locations['path'][_l], _subsample)
+            _remote_lfns  = self._wrapper_gfal_ls_r( _remote_path, self.remote_locations['protocol'][_l])
 
-          # Filter logical files names so that only interesting ones pass
-          _keywords_any  = self.samples_info[_s]['subsample'].values()  # filter lfn which has subsample string
-          _remote_lfns   = [ _ll for _ll in _remote_lfns if
-                              filter_keywords( _ll, self.search_keywords['all'], self.search_keywords['any'] + _keywords_any, self.search_keywords['none'])]
+            # Filter logical files names so that only interesting ones pass
+            _keywords_any  = self.samples_info[_s]['subsample'].values()  # filter lfn which has subsample string
+            _remote_lfns   = [ _ll for _ll in _remote_lfns if
+                                filter_keywords( _ll, self.search_keywords['all'], self.search_keywords['any'] + _keywords_any, self.search_keywords['none'])]
 
-          # Group files according to subsample and save them in separate files
-          _remote_lfns = { _ss : filter(lambda x: '/' + _ss + '/' in x, _remote_lfns) for _ss in self.samples_info[_s]['subsample'].values()}
+            # Group files according to subsample and save them in separate files
+            #_remote_lfns = { _ss : filter(lambda x: '/' + _ss + '/' in x, _remote_lfns) for _ss in self.samples_info[_s]['subsample'].values()}
+            _remote_lfns = { _subsample : filter(lambda x: '/' + _subsample + '/' in x, _remote_lfns)}
 
-          # Save into files
-          for _ss, _r in _remote_lfns.iteritems():
+            # Save into files
+            for _ss, _r in _remote_lfns.iteritems():
 
-            _file = os.path.join( self.path_logical_file_names, 'remote', _l, _s, _ss.replace('/', '__') + '.txt')
+              _file = os.path.join( self.path_logical_file_names, 'remote', _l, _s, _ss.replace('/', '__') + '.txt')
 
-            # Save to a file
-            with open(_file, 'w') as _output:
-              _output.write('\n'.join(_r))
+              # Save to a file
+              with open(_file, 'w') as _output:
+                _output.write('\n'.join(_r))
 
-            Print('status', 'The LFNs were written to "{}".'.format( _file))
-
+              Print('status', 'The LFNs were written to "{}".'.format( _file))
         # If something gets wrong notify
+
         except Exception, e:
           Print('error', "Error with sample {0} at {1}: {2}".format( _s, _l, e))
 

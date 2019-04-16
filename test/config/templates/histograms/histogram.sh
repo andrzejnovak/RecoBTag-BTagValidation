@@ -8,6 +8,14 @@ eval `scramv1 runtime -sh`
 
 cd -
 cp <X509_USER_PROXY_path> .
+ls <X509_USER_PROXY_path>
+cp /.automount/home/home__home1/institut_3a/novak/krb5cc_novak . 
+eosfusebind -g krb5 krb5cc_novak
+TT=<input_files>[0] 
+TT=(${TT//;/ }) 
+TT=(${TT//,/ }) 
+ls $TT
+kdestroy
 cmsRun <path_batch_file_wo_ext>.py
 rm <X509_USER_PROXY_file>
 

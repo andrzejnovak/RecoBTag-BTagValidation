@@ -2,7 +2,7 @@
 #include "TString.h"
 #include "TH1F.h"
 
-bool DEBUG = false;
+bool DEBUG = true;
 bool DEBUG_pretag = true;
 bool DEBUG_tag = false;
 bool DEBUG_untag = false;
@@ -94,10 +94,12 @@ void convert(std::vector<TString> fin, std::vector<TString> fout, std::vector<st
 		std::string hname_data_tag = "UNWEIGHTED__DATA__FatJet_"+var+"_"+tag+"pass_"+pt+"_data";
 		std::string hname_data_untag = "UNWEIGHTED__DATA__FatJet_"+var+"_"+tag+"fail_"+pt+"_data";
 		if(DEBUG)std::cout<< "attempt get data histograms "<< var << ", "<<tag <<", pt = "<<pt<< std::endl;
+		if(DEBUG)std::cout<< hname_data << "XXX" <<std::endl;	
 		TH1F *h_data = (TH1F*)f->Get(hname_data.c_str());
 		TH1F *h_data_tag = (TH1F*)f->Get(hname_data_tag.c_str());
 		TH1F *h_data_untag = (TH1F*)f->Get(hname_data_untag.c_str());
 		if(DEBUG)std::cout<< "got data histograms."<<std::endl;	
+		if(DEBUG)std::cout<< h_data <<std::endl;	
 		float int_data = h_data->Integral(0,h_data->GetXaxis()->GetNbins()+1);
 		float int_data_tag = h_data_tag->Integral(0,h_data_tag->GetXaxis()->GetNbins()+1);
 		float int_data_untag = h_data_untag->Integral(0,h_data_untag->GetXaxis()->GetNbins()+1);
@@ -1624,26 +1626,26 @@ void convert(){
 	std::cout << "Processing 350" << std::endl;
 	std::cout << "================"<< std::endl;
 	
-	fin.push_back("/afs/cern.ch/user/r/rsyarif/workHere/HbbTagVal/Jan10-2018_CommSF_v1/CMSSW_9_4_1/src/RecoBTag/BTagValidation/BTV/results/plots_final/Run2017BCDEF_ReReco_QCDMuonEnriched_AK8Jet300orAK4Jet300_Pt350_Final_DoubleMuonTaggedFatJets_histograms_btagval_v3_ptReweighted_SysMerged.root");
+	fin.push_back("/.automount/home/home__home1/institut_3a/novak/btag/CMSSW_9_4_13/src/RecoBTag/BTagValidation/test/results/plots_final/Run2017_QCDMuEnriched_DoubleMuonTaggedFatJets_histograms_btagval.root");
 	fout.push_back("SFtemplates/"+date+"/Run2017BCDEF_ReReco_QCDMuonEnriched_AK8Jet300orAK4Jet300_Pt350_Final_DoubleMuonTaggedFatJets_histograms_btagval_v3_ptReweighted_SysMerged_SFtemplates");
 	varName.push_back("JP"); //JP must always be first. (Because all histo scaling is based on JP pre tag histos)
 
-	fin.push_back("/afs/cern.ch/user/r/rsyarif/workHere/HbbTagVal/Jan10-2018_CommSF_v1/CMSSW_9_4_1/src/RecoBTag/BTagValidation/BTV/results/plots_final/Run2017BCDEF_ReReco_QCDMuonEnriched_AK8Jet300orAK4Jet300_Pt350_Final_DoubleMuonTaggedFatJets_histograms_btagval_v4_JPhasSV_ptReweighted_SysMerged.root");
-	fout.push_back("SFtemplates/"+date+"/Run2017BCDEF_ReReco_QCDMuonEnriched_AK8Jet300orAK4Jet300_Pt350_Final_DoubleMuonTaggedFatJets_histograms_btagval_v4_JPhasSV_ptReweighted_SysMerged_SFtemplates");
-	varName.push_back("JPhasSV");
+	// fin.push_back("/afs/cern.ch/user/r/rsyarif/workHere/HbbTagVal/Jan10-2018_CommSF_v1/CMSSW_9_4_1/src/RecoBTag/BTagValidation/BTV/results/plots_final/Run2017BCDEF_ReReco_QCDMuonEnriched_AK8Jet300orAK4Jet300_Pt350_Final_DoubleMuonTaggedFatJets_histograms_btagval_v4_JPhasSV_ptReweighted_SysMerged.root");
+	// fout.push_back("SFtemplates/"+date+"/Run2017BCDEF_ReReco_QCDMuonEnriched_AK8Jet300orAK4Jet300_Pt350_Final_DoubleMuonTaggedFatJets_histograms_btagval_v4_JPhasSV_ptReweighted_SysMerged_SFtemplates");
+	// varName.push_back("JPhasSV");
 
-	fin.push_back("/afs/cern.ch/user/r/rsyarif/workHere/HbbTagVal/Jan10-2018_CommSF_v1/CMSSW_9_4_1/src/RecoBTag/BTagValidation/BTV/results/plots_final/Run2017BCDEF_ReReco_QCDMuonEnriched_AK8Jet300orAK4Jet300_Pt350_Final_DoubleMuonTaggedFatJets_histograms_btagval_v4_JPnoSV_ptReweighted_SysMerged.root");
-	fout.push_back("SFtemplates/"+date+"/Run2017BCDEF_ReReco_QCDMuonEnriched_AK8Jet300orAK4Jet300_Pt350_Final_DoubleMuonTaggedFatJets_histograms_btagval_v4_JPnoSV_ptReweighted_SysMerged_SFtemplates");
-	varName.push_back("JPnoSV");
+	// fin.push_back("/afs/cern.ch/user/r/rsyarif/workHere/HbbTagVal/Jan10-2018_CommSF_v1/CMSSW_9_4_1/src/RecoBTag/BTagValidation/BTV/results/plots_final/Run2017BCDEF_ReReco_QCDMuonEnriched_AK8Jet300orAK4Jet300_Pt350_Final_DoubleMuonTaggedFatJets_histograms_btagval_v4_JPnoSV_ptReweighted_SysMerged.root");
+	// fout.push_back("SFtemplates/"+date+"/Run2017BCDEF_ReReco_QCDMuonEnriched_AK8Jet300orAK4Jet300_Pt350_Final_DoubleMuonTaggedFatJets_histograms_btagval_v4_JPnoSV_ptReweighted_SysMerged_SFtemplates");
+	// varName.push_back("JPnoSV");
 
-	fin.push_back("/afs/cern.ch/user/r/rsyarif/workHere/HbbTagVal/Jan10-2018_CommSF_v1/CMSSW_9_4_1/src/RecoBTag/BTagValidation/BTV/results/plots_final/Run2017BCDEF_ReReco_QCDMuonEnriched_AK8Jet300orAK4Jet300_Pt350_Final_DoubleMuonTaggedFatJets_histograms_btagval_v4_SVmass_ptReweighted_SysMerged.root");
-	fout.push_back("SFtemplates/"+date+"/Run2017BCDEF_ReReco_QCDMuonEnriched_AK8Jet300orAK4Jet300_Pt350_Final_DoubleMuonTaggedFatJets_histograms_btagval_v4_SVmass_ptReweighted_SysMerged_SFtemplates");
-	varName.push_back("tau1VertexMassCorr");
+	// fin.push_back("/afs/cern.ch/user/r/rsyarif/workHere/HbbTagVal/Jan10-2018_CommSF_v1/CMSSW_9_4_1/src/RecoBTag/BTagValidation/BTV/results/plots_final/Run2017BCDEF_ReReco_QCDMuonEnriched_AK8Jet300orAK4Jet300_Pt350_Final_DoubleMuonTaggedFatJets_histograms_btagval_v4_SVmass_ptReweighted_SysMerged.root");
+	// fout.push_back("SFtemplates/"+date+"/Run2017BCDEF_ReReco_QCDMuonEnriched_AK8Jet300orAK4Jet300_Pt350_Final_DoubleMuonTaggedFatJets_histograms_btagval_v4_SVmass_ptReweighted_SysMerged_SFtemplates");
+	// varName.push_back("tau1VertexMassCorr");
 
 	{
 	double kScales[7] = {1.,1.,1.,1.,1.,1.,1.}; //nominal
 	kScaleStr = "";
-	convert(fin,fout,varName,"H",kScales,kScaleStr);
+	// convert(fin,fout,varName,"H",kScales,kScaleStr);
 	convert(fin,fout,varName,"M1",kScales,kScaleStr);
 	convert(fin,fout,varName,"M2",kScales,kScaleStr);
 	convert(fin,fout,varName,"L",kScales,kScaleStr);

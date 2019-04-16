@@ -387,10 +387,25 @@ options.register('produceDoubleBCommissioning', False,
     VarParsing.varType.bool,
     "Produce DoubleB commissioning plots"
     )
-options.register('produceDeepDoubleXCommissioning', True,
+options.register('produceDeepDoubleXCommissioning', False,
     VarParsing.multiplicity.singleton,
     VarParsing.varType.bool,
     "Produce DeepDoubleX commissioning plots"
+    )
+options.register('produceDDXSFtemplates', False,
+    VarParsing.multiplicity.singleton,
+    VarParsing.varType.bool,
+    "Produce DDX SF plots/templates"
+    )
+options.register('DDXWPFile', "aux/DDX.json",
+    VarParsing.multiplicity.singleton,
+    VarParsing.varType.string,
+    "DDX taggers WP file"
+    )
+options.register('chooseDDXtagger', 'DDBvL',
+    VarParsing.multiplicity.singleton,
+    VarParsing.varType.string,
+    "Specify DDX tagger (DoubleB, DDBvL, DDCvL, DDCvB) to use for SF plots/templates (only applicable when produceDDXSFtemplates=True)"
     )
 options.register('produceDoubleBSFtemplates', False,
     VarParsing.multiplicity.singleton,
@@ -445,6 +460,7 @@ if options.usePrunedSubjets and options.useSoftDropSubjets:
 elif not options.usePrunedSubjets and not options.useSoftDropSubjets:
   print("!!!Warning: no subjets will be processed.!!!")
   print("!!!Select either pruned subjets with 'usePrunedSubjets' or soft drop subjets with 'useSoftDropSubjets'.")
+  print("!!!Warning: SoftDropSubjetInfo will be used for FatJets.!!!")
 
 # print options
 
@@ -599,6 +615,9 @@ process.btagval = cms.EDAnalyzer('BTagValidation',
     File_BFrag				= cms.string(options.FileBFrag),
     produceDoubleBCommissioning        = cms.bool(options.produceDoubleBCommissioning),
     produceDeepDoubleXCommissioning    = cms.bool(options.produceDeepDoubleXCommissioning),
+    produceDDXSFtemplates        = cms.bool(options.produceDDXSFtemplates),
+    DDXWPFile        = cms.string(options.DDXWPFile),
+    chooseDDXtagger        = cms.string(options.chooseDDXtagger),
     produceDoubleBSFtemplates        = cms.bool(options.produceDoubleBSFtemplates),
     produceDoubleBSFtemplatesV2        = cms.bool(options.produceDoubleBSFtemplatesV2),
     produceDoubleBSFtemplates_JPhasSV        = cms.bool(options.produceDoubleBSFtemplatesJPhasSV),

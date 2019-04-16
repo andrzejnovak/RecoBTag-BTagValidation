@@ -47,7 +47,7 @@ def filter_keywords(file_name, filter_keywords_all, filter_keywords_any, filter_
   else:
     return True
 
-def check_root_file(file_name):
+def check_root_file(file_name, silent=False):
     '''
     Check if file exists and if it's ok. If yes return True, else False
     '''
@@ -73,7 +73,7 @@ def check_root_file(file_name):
         _status = False
 
       if _status == False:
-        Print('error','ROOT file {0} is not ok.'.format(file_name))
+        if not silent: Print('error','ROOT file {0} is not ok.'.format(file_name))
 
     else:
       _status = False

@@ -44,7 +44,7 @@ class BatchTool(object):
       with open( _script, 'w') as _f:
         _f.write( _template)
 
-  def send_job(self):
+  def send_job(self, silent=False):
 
     # Change permission so that it can be executed
     _sh = self.arguments['<path_batch_file_wo_ext>'] + '.sh'
@@ -56,10 +56,10 @@ class BatchTool(object):
     if self.batch == 'condor':
       _txt      = self.arguments['<path_batch_file_wo_ext>'] + '.txt'
       _command  = ['condor_submit', _txt]
-      Print('python_info','{0}'.format(' '.join(_command)))
+      if not silent: Print('python_info','{0}'.format(' '.join(_command)))
       sp.call(' '.join(_command), shell=True)
 
     elif self.batch == 'lxbatch':
       _command  = ['bsub', '-q', self.queue, '-J', self.arguments['<path_batch_file_wo_ext>'], '<', _sh]
-      Print('python_info','{0}'.format(' '.join(_command)))
+      if not silent: Print('python_info','{0}'.format(' '.join(_command)))
       sp.call( ' '.join(_command), shell=True)

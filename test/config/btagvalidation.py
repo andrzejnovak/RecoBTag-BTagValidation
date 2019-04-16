@@ -5,7 +5,6 @@ import paths
 
 def string(txt):
   ''' str wrapper since cmsRun/python requires string to have "". '''
-
   return txt.join(["'", "'"])
 
 parameters = {
@@ -15,11 +14,11 @@ parameters = {
   'DEBUG'                     : False,                   # Display debugging statements
   'DEBUGlevel'                : 0,                      # Debugging statements level
   'triggerSelection'          : string( ','.join(['HLT_BTagMu_AK8Jet300_Mu5' + "'", "'" + 'HLT_BTagMu_Jet300_Mu5'])), # Trigger selection
-  'useJetProbaTree'           : True,                   # Use jet probability tree
-  'applyFatJetMuonTagging'    : True,                   # Apply muon tagging to fat jets (require 1 muon in fatjet)
-  'applyFatJetMuonTaggingV2'  : False,                  # Apply muon tagging to fat jets (require at least 1 muon in a subjet)
+  'useJetProbaTree'           : False,                   # Use jet probability tree
+  'applyFatJetMuonTagging'    : False,                  # Apply muon tagging to fat jets (require 1 muon in fatjet)
+  'applyFatJetMuonTaggingV2'  : True,                   # Apply muon tagging to fat jets (require at least 1 muon in a subjet)
   'applyFatJetBTagging'       : False,                  # Apply b tagging to fat jets
-  'fatJetDoubleTagging'       : True,                   # Require fat jets to be double-tagged
+  'fatJetDoubleTagging'       : True,                  # Require fat jets to be double-tagged
   'fatJetDoubleBTagging'      : False,                  # Require fat jets to be double-b-tagged
   'fatJetDoubleSVBTagging'    : False,                  # Require fat jets to be double-SV-b-tagged
   'usePrunedSubjets'          : False,                  # Process pruned subjets
@@ -34,8 +33,8 @@ parameters = {
   'fatJetPtMin'               : 350.,                   # Minimum fat jet Pt
   'fatJetPtMax'               : 1.E6,                   # Maximum fat jet Pt
   'removeProblemJet'          : True,                   # Remove problematic jets from low pT MC bins
-  'usePrunedMass'             : True,                   # Use pruned mass cut
-  'useSoftDropMass'           : False,                  # Use softdrop mass cut
+  'usePrunedMass'             : False,                   # Use pruned mass cut
+  'useSoftDropMass'           : True,                  # Use softdrop mass cut
   'fatJetGroomedMassMin'      : 50.,                     # Minimum fat jet softdrop/pruned mass
   'fatJetGroomedMassMax'      : 1.E6,                   # Maximum fat jet softdrop/pruned mass
   'fatJetTau21Min'            : 0.0,                    # added by rizki"tau2/tau1 jet substructure min cut for fat jets
@@ -95,7 +94,7 @@ parameters = {
                                 "'" + os.path.join( paths.main, 'aux', 'JECfiles/Summer16_23Sep2016V3_MC_L3Absolute_AK8PFchs.txt')]
                                 )),
   'jecUncPayloadName'         : string(os.path.join( paths.main, 'aux', 'JECfiles/Summer16_23Sep2016V3_MC_Uncertainty_AK8PFchs.txt')),                  # JEC uncertainty payload name
-  'doNewJEC'                  : True,                   # Apply new JECs
+  'doNewJEC'                  : False,                   # Apply new JECs
   'doJECUncert'               : True,                  # Do JEC uncertainty
   # This file/path doesn't exist
   'FileBFrag'                 : string( os.path.join( paths.main, 'aux', 'PtRelFall12')), # File path for doBFrag systematics
@@ -112,6 +111,9 @@ parameters = {
   'triggerLogicIsOR'          : True,
   'produceDoubleBCommissioning' : False,
   'produceDeepDoubleXCommissioning' : False,
+  'produceDDXSFtemplates'     : False,
+  'DDXWPFile'                   : string( os.path.join( paths.main, 'aux', 'DDX.json')),
+  'chooseDDXtagger'           : string('DDBvL'),
   'produceDoubleBSFtemplates' : False,  #use JP
   'produceDoubleBSFtemplatesV2': False, #use SVmass
   'produceDoubleBSFtemplates_JPhasSV': False, #use JPhasSV
