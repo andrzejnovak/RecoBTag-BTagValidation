@@ -11,11 +11,12 @@ def string(txt):
 
 ##############################
 ##############################
-taggers = ["DoubleB", "DDBvL", "DDCvL"]
+taggers = ["DoubleB", "DDBvL", "DDCvL", "DeepAK8ZHbb"]
 run_names = ['Run2016', 'Run2017']
 
 datasuff ="-17Nov2017-v1_v04_20190228"
 qcdsuff ="_MuEnrichedPt5_TuneCP5_13TeV_pythia8_v04_20190228"
+qcdsuffv2 ="_MuEnrichedPt5_TuneCP5_13TeV_pythia8_v04_20190321"
 # v03
 #datasuff ="-17Nov2017-v1_v03_20190222"
 #qcdsuff ="_MuEnrichedPt5_TuneCP5_13TeV_pythia8_v03_20190222"
@@ -32,6 +33,14 @@ samples17_qcd = [   'QCD_Pt-170to300'+qcdsuff,
                   'QCD_Pt-800to1000'+qcdsuff,
                   'QCD_Pt-1000toInf'+qcdsuff,
                   ]
+samples17_qcdv2 = [   'QCD_Pt-170to300'+qcdsuffv2,
+                  'QCD_Pt-300to470'+qcdsuffv2,
+                  'QCD_Pt-470to600'+qcdsuffv2,
+                  'QCD_Pt-600to800'+qcdsuff, # Temp use old one
+                  'QCD_Pt-800to1000'+qcdsuffv2,
+                  'QCD_Pt-1000toInf'+qcdsuffv2,
+                  ]
+
 
 datasuff16 ="-17Jul2018-v1_9_4_X_v04"
 qcdsuff16 ="_MuEnrichedPt5_TuneCUETP8M1_13TeV_pythia8_9_4_X_v04"
@@ -56,7 +65,7 @@ info = {
 }
 
 # For each Run
-for run_name, samples_data, samples_qcd in zip(run_names, [samples16_data, samples17_data], [samples16_qcd, samples17_qcd]):
+for run_name, samples_data, samples_qcd in zip(run_names, [samples16_data, samples17_data], [samples16_qcd, samples17_qcdv2]):
   # For each tagger in campaign
   for tagger in taggers:
     # Fill basic dict

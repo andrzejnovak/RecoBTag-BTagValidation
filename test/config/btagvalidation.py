@@ -95,7 +95,7 @@ parameters = {
                                 )),
   'jecUncPayloadName'         : string(os.path.join( paths.main, 'aux', 'JECfiles/Summer16_23Sep2016V3_MC_Uncertainty_AK8PFchs.txt')),                  # JEC uncertainty payload name
   'doNewJEC'                  : False,                   # Apply new JECs
-  'doJECUncert'               : False,                  # Do JEC uncertainty
+  'doJECUncert'               : True,                  # Do JEC uncertainty, produced in parallel, safe to keep True
   # This file/path doesn't exist
   'FileBFrag'                 : string( os.path.join( paths.main, 'aux', 'PtRelFall12')), # File path for doBFrag systematics
   'FilePVWt'                  : string(''),

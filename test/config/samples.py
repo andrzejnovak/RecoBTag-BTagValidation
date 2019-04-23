@@ -7,6 +7,7 @@
 #qcdsuff ="_MuEnrichedPt5_TuneCP5_13TeV_pythia8_v03_20190222"
 datasuff ="-17Nov2017-v1_v04_20190228"
 qcdsuff ="_MuEnrichedPt5_TuneCP5_13TeV_pythia8_v04_20190228"
+qcdsuffv2 ="_MuEnrichedPt5_TuneCP5_13TeV_pythia8_v04_20190321"
 samples_data = [  'BTagMu_Run2017B'+datasuff,
                   'BTagMu_Run2017C'+datasuff,
                   'BTagMu_Run2017D'+datasuff,
@@ -19,6 +20,14 @@ samples_qcd = [   'QCD_Pt-170to300'+qcdsuff,
                   'QCD_Pt-600to800'+qcdsuff,
                   'QCD_Pt-800to1000'+qcdsuff,
                   'QCD_Pt-1000toInf'+qcdsuff,
+                  ]
+
+samples_qcdv2 = [   'QCD_Pt-170to300'+qcdsuffv2,
+                  'QCD_Pt-300to470'+qcdsuffv2,
+                  'QCD_Pt-470to600'+qcdsuffv2,
+                  'QCD_Pt-600to800'+qcdsuff, # Temp use old one
+                  'QCD_Pt-800to1000'+qcdsuffv2,
+                  'QCD_Pt-1000toInf'+qcdsuffv2,
                   ]
 
 xs_qcd = [  8292.98,
@@ -41,7 +50,7 @@ for sample in samples_data:
                     '0' : '2017/9_4_X_v04/'+sample,
                     }
                 }
-for sample, xs in zip(samples_qcd, xs_qcd):
+for sample, xs in zip(samples_qcdv2, xs_qcd):
   print sample, xs
   info[sample] = {
                 'type'    : 'MC',
